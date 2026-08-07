@@ -4,6 +4,23 @@
   <PropertyGroup>
     <DSP_FLD>D:\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\dsp</DSP_FLD>
   </PropertyGroup>
-  <ItemDefinitionGroup />
-  <ItemGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>app/RLAgent;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="app\RLAgent\rl64_port.h" />
+    <ClInclude Include="app\RLAgent\rl64_actor_weights.h" />
+    <ClCompile Include="app\RLAgent\rl64_port.c" />
+    <ClCompile Include="app\RLAgent\rl64_actor_weights_small.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_0.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_1.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_2.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_3.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_4.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_5.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_6.c" />
+    <ClCompile Include="app\RLAgent\rl64_w1_7.c" />
+  </ItemGroup>
 </Project>

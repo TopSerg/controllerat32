@@ -73,6 +73,7 @@ volatile SysTick_Type *pSysTick = SysTick;
 SystemParams_st SystemParams;
 SystemParams_st *SystemSetActual = &SystemParams;
 #include "platform_math.h"
+#include "rl64_port.h"
 
 __attribute__((section(".firmware_crc"))) const uint32_t crc_firm				= 0xFAFBFCFD;
 __attribute__((section(".tables_crc"))) const uint32_t crc_table				= 0xFAFBFCFD;
@@ -392,7 +393,7 @@ static void timerTickCall(void)
 	
 	TimIsrTime = CONVERT_toUs((startTick - GET_ACTUAL_TIMECNT())) * 1e6;
 	
-#if 1
+#if 0
 	DW_workModeChoise localDW = { 0 };
 	point++;
 	repeat++;
@@ -542,6 +543,9 @@ void adcCall(void)
 
 	/* Call to exported function */
 	isrADC();
+
+	/* H64 RL agent timing test. Shadow mode only: PWM/control outputs stay untouched. */
+	(void)rl64_at32_shadow_step(extRef.refValue, -1.0e31f);
 #if 0
 	static uint32_t i = 0;
 	VdPlay = waveData[i++];
@@ -717,7 +721,6 @@ int main(void)
 	crc_data_reset();
 	/*make OWN uid with 32 bits*/
 	AT_device_id = crc_block_calculate(&uid[0], 3);
-	
 	boardAnalog.boardCPU_ID_low = AT_device_id;
 	boardAnalog.boardCPU_ID_High = *((uint32_t*)UID_ADDR_HIGH);
 	if (!getBoardSettings(&boardAnalog)) cpT_McuFailureCode_gstate->McuHardwareFault = 1;
@@ -853,6 +856,7 @@ int main(void)
 #endif
 	/* Initialize model */
 	ControlSystem_v2_initialize();
+	rl64_at32_init();
 	
 
 	TripLevels.OverCurrent_level = 750;
