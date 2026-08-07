@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_ODC|VisualGDB">
+      <Configuration>Debug_ODC</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|VisualGDB">
+      <Configuration>Debug</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|VisualGDB">
+      <Configuration>Release</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{C8E91B87-FCC4-4A73-9999-74E925183EB1}</ProjectGuid>
+    <BSP_ID>com.sysprogs.arm.stm32</BSP_ID>
+    <BSP_VERSION>2024.01</BSP_VERSION>
+    <InPlaceBSPSubdir />
+    <RelativeBSPPath />
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ODC|VisualGDB'" Label="Configuration" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <Import Project="Main.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ODC|VisualGDB'" Label="PropertySheets">
+    <Import Project="Main.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <Import Project="Main.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>14.2.1/15.2/r2</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+    <UserVariablePropertyListFile>PropertySheet.props</UserVariablePropertyListFile>
+    <GenerateHexFile>true</GenerateHexFile>
+    <OutputMemoryUtilization>true</OutputMemoryUtilization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ODC|VisualGDB'">
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>14.2.1/15.2/r2</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+    <UserVariablePropertyListFile>PropertySheet.props</UserVariablePropertyListFile>
+    <GenerateHexFile>true</GenerateHexFile>
+    <OutputMemoryUtilization>true</OutputMemoryUtilization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
+    <ToolchainVersion>14.2.1/15.2/r2</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32.props</MCUPropertyListFile>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <ClCompile>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <AdditionalIncludeDirectories>libraries/drivers/nc;libraries/cmsis/cm4/core_support;libraries/cmsis/cm4/device_support;bsp;include/libraries/cmsis/cm4/core_support;include/libraries/cmsis/cm4/device_support;include/libraries/drivers/inc;app/CommInterface;user;app/FreeRTOS-Kernel/include;app/FreeRTOS-Kernel/portable/memmang;app/FreeRTOS-Kernel/portable/GCC/ARM_CM4F;app/FreeRtosTasks;app/CanOpenDrivers;app/ControlAlg;ComputeLibrary/Include;app/CANopenNode;app/CANopenNode/example;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\drivers\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\core_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\device_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at_start_f403a\templates\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at32f403a_407_board;user/CAN_DBC_MODULE;user/CAN_DBC_MODULE/DBC_MSG;user/CAN_DBC_MODULE/DBC_MSG/build;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG=1;PORTABLE_WORDSIZES;USART_NUM;_CO_USE_GLOBALS;__TARGET_FPU_VFP;flash_layout;AT32F403AVGT7;USE_STDPERIPH_DRIVER;AT_START_F403A_V1;loaderSize=16000;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <CPPLanguageStandard />
+      <Optimization>O3</Optimization>
+      <InlineFunctions>true</InlineFunctions>
+      <LinkTimeOptimization>false</LinkTimeOptimization>
+    </ClCompile>
+    <Link>
+      <LibrarySearchDirectories>bsp;%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>arm_cortexM4lf_math;%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <LinkerScript>ldscripts/AT32F403AxG_FLASH.ld</LinkerScript>
+      <GenerateMapFile>true</GenerateMapFile>
+      <PrintMemoryUsage>true</PrintMemoryUsage>
+      <ProduceRelocationRecords>true</ProduceRelocationRecords>
+    </Link>
+    <ToolchainSettingsContainer>
+      <FloatABI>
+      </FloatABI>
+    </ToolchainSettingsContainer>
+    <ToolchainSettingsContainer>
+      <ARMFPU>
+      </ARMFPU>
+      <ARMCPU>cortex-m4</ARMCPU>
+    </ToolchainSettingsContainer>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ODC|VisualGDB'">
+    <ClCompile>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <AdditionalIncludeDirectories>libraries/drivers/nc;libraries/cmsis/cm4/core_support;libraries/cmsis/cm4/device_support;bsp;include/libraries/cmsis/cm4/core_support;include/libraries/cmsis/cm4/device_support;include/libraries/drivers/inc;app/CommInterface;user;app/FreeRTOS-Kernel/include;app/FreeRTOS-Kernel/portable/memmang;app/FreeRTOS-Kernel/portable/GCC/ARM_CM4F;app/FreeRtosTasks;app/CanOpenDrivers;app/ControlAlg;ComputeLibrary/Include;app/CANopenNode;app/CANopenNode/example;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\drivers\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\core_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\device_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at_start_f403a\templates\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at32f403a_407_board;%(ClCompile.AdditionalIncludeDirectories);user/CAN_DBC_MODULE;user/CAN_DBC_MODULE/DBC_MSG</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG=1;PORTABLE_WORDSIZES;USART_NUM;_CO_USE_GLOBALS;__TARGET_FPU_VFP;flash_layout;AT32F403AVGT7;USE_STDPERIPH_DRIVER;AT_START_F403A_V1;%(ClCompile.PreprocessorDefinitions);loaderSize=16000</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <CPPLanguageStandard>
+      </CPPLanguageStandard>
+      <Optimization>O3</Optimization>
+      <InlineFunctions>true</InlineFunctions>
+      <LinkTimeOptimization>false</LinkTimeOptimization>
+    </ClCompile>
+    <Link>
+      <LibrarySearchDirectories>bsp;%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>arm_cortexM4lf_math;%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <AdditionalOptions>-specs=nano.specs -specs=nosys.specs</AdditionalOptions>
+      <LinkerScript>ldscripts/AT32F403AxG_FLASH.ld</LinkerScript>
+      <GenerateMapFile>true</GenerateMapFile>
+      <PrintMemoryUsage>true</PrintMemoryUsage>
+      <ProduceRelocationRecords>true</ProduceRelocationRecords>
+    </Link>
+    <ToolchainSettingsContainer>
+      <FloatABI>
+      </FloatABI>
+    </ToolchainSettingsContainer>
+    <ToolchainSettingsContainer>
+      <ARMFPU>
+      </ARMFPU>
+      <ARMCPU>cortex-m4</ARMCPU>
+    </ToolchainSettingsContainer>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <ClCompile>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <AdditionalIncludeDirectories>D:\AT32IDE\repo\BSP\AT32F403A_407\libraries\drivers\inc;D:\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\core_support;D:\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\device_support;D:\AT32IDE\repo\BSP\AT32F403A_407\project\at_start_f403a\templates\inc;D:\AT32IDE\repo\BSP\AT32F403A_407\project\at32f403a_407_board;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\drivers\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\core_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\libraries\cmsis\cm4\device_support;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at_start_f403a\templates\inc;..\..\AT32IDE\repo\BSP\AT32F403A_407\project\at32f403a_407_board;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;flash_layout;AT32F403AVGT7;USE_STDPERIPH_DRIVER;AT_START_F403A_V1;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions />
+      <CPPLanguageStandard />
+    </ClCompile>
+    <Link>
+      <LibrarySearchDirectories>%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <AdditionalOptions />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="app\CANopenNode\301\CO_config.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_driver.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_Emergency.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_fifo.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_HBconsumer.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_NMT_Heartbeat.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_Node_Guarding.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_ODinterface.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_PDO.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_SDOclient.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_SDOserver.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_SYNC.h" />
+    <ClInclude Include="app\CANopenNode\301\CO_TIME.h" />
+    <ClInclude Include="app\CANopenNode\301\crc16-ccitt.h" />
+    <ClInclude Include="app\CANopenNode\303\CO_LEDs.h" />
+    <ClInclude Include="app\CANopenNode\304\CO_GFC.h" />
+    <ClInclude Include="app\CANopenNode\304\CO_SRDO.h" />
+    <ClInclude Include="app\CANopenNode\305\CO_LSS.h" />
+    <ClInclude Include="app\CANopenNode\305\CO_LSSmaster.h" />
+    <ClInclude Include="app\CANopenNode\305\CO_LSSslave.h" />
+    <ClInclude Include="app\CANopenNode\309\CO_gateway_ascii.h" />
+    <ClInclude Include="app\CANopenNode\CANopen.h" />
+    <ClInclude Include="app\CANopenNode\extra\CO_trace.h" />
+    <ClInclude Include="app\CANopenNode\storage\CO_storage.h" />
+    <ClInclude Include="app\CommInterface\CommInterface.h" />
+    <ClInclude Include="app\CommInterface\CompileTime.h" />
+    <ClInclude Include="app\CommInterface\DataModel.h" />
+    <ClInclude Include="app\CommInterface\Message.h" />
+    <ClInclude Include="app\ControlAlg\ControlSystem_v2.h" />
+    <ClInclude Include="app\ControlAlg\ControlSystem_v2_private.h" />
+    <ClInclude Include="app\ControlAlg\ControlSystem_v2_types.h" />
+    <ClInclude Include="app\ControlAlg\Identification.h" />
+    <ClInclude Include="app\ControlAlg\indTable.h" />
+    <ClInclude Include="app\ControlAlg\Logic.h" />
+    <ClInclude Include="app\ControlAlg\PIDs.h" />
+    <ClInclude Include="app\ControlAlg\Position_Observer.h" />
+    <ClInclude Include="app\ControlAlg\Protections.h" />
+    <ClInclude Include="app\ControlAlg\PWMcalc.h" />
+    <ClInclude Include="app\ControlAlg\rtwtypes.h" />
+    <ClInclude Include="app\ControlAlg\systemDefinations.h" />
+    <ClInclude Include="app\ControlAlg\testSignals.h" />
+    <ClInclude Include="app\ControlAlg\TrqCalc.h" />
+    <ClInclude Include="app\ControlAlg\utils.h" />
+    <ClInclude Include="app\ControlAlg\wave.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\atomic.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\deprecated_definitions.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\event_groups.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\FreeRTOS.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\list.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\message_buffer.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\mpu_prototypes.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\mpu_wrappers.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\newlib-freertos.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\picolibc-freertos.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\portable.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\projdefs.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\queue.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\semphr.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\StackMacros.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\stack_macros.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\stream_buffer.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\task.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\include\timers.h" />
+    <ClInclude Include="app\CanOpenDrivers\canOpen_lib.h" />
+    <ClInclude Include="app\CanOpenDrivers\CO_driver_target.h" />
+    <ClInclude Include="app\CanOpenDrivers\CO_storageDrv.h" />
+    <ClInclude Include="app\FreeRTOS-Kernel\portable\GCC\ARM_CM4F\portmacro.h" />
+    <ClInclude Include="app\FreeRtosTasks\FreeRTOSConfig.h" />
+    <ClInclude Include="app\CanOpenDrivers\OD.h" />
+    <ClInclude Include="app\FreeRtosTasks\WorkTasks.h" />
+    <ClInclude Include="bsp\artery_platform.h" />
+    <ClInclude Include="bsp\at32f403a_407_board.h" />
+    <ClInclude Include="bsp\at32f403a_407_clock.h" />
+    <ClInclude Include="bsp\at32f403a_407_conf.h" />
+    <ClInclude Include="bsp\at32f403a_407_int.h" />
+    <ClInclude Include="bsp\platform_math.h" />
+    <ClInclude Include="user\adcInit.h" />
+    <ClInclude Include="user\can2Init.h" />
+    <ClInclude Include="user\canInit.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANdbcDriver.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\canDBCtask.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANDBCUtils.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANErrorsHandlers.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANReceiveDispatcher.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANSendDispatcher.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\CANSignalsMap.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DbcDispatcher.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DbcDispatcher.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\generatedParams.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuCurrentVoltage.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuCurrentVoltage.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuDeratingStatus.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuDeratingStatus.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFailureCode.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFailureCode.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature1.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature1.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature2.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature2.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuVCU1.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuVCU1.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU01.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU01.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU02.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU02.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcutoMCUCurrentCommand.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcutoMCUCurrentCommand.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\IMsg.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\defaultStructures.h" />
+    <ClInclude Include="user\flash.h" />
+    <ClInclude Include="user\getBoardSettings.h" />
+    <ClInclude Include="user\gpioInit.h" />
+    <ClInclude Include="user\nvicInit.h" />
+    <ClInclude Include="user\pwmInit.h" />
+    <ClInclude Include="user\resolverInit.h" />
+    <ClInclude Include="user\tempSpiInit.h" />
+    <ClInclude Include="user\timerInit.h" />
+    <ClInclude Include="user\uartInit.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <ClCompile Include="app\CANopenNode\301\CO_Emergency.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_fifo.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_HBconsumer.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_NMT_Heartbeat.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_Node_Guarding.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_ODinterface.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_PDO.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_SDOclient.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_SDOserver.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_SYNC.c" />
+    <ClCompile Include="app\CANopenNode\301\CO_TIME.c" />
+    <ClCompile Include="app\CANopenNode\301\crc16-ccitt.c" />
+    <ClCompile Include="app\CANopenNode\303\CO_LEDs.c" />
+    <ClCompile Include="app\CANopenNode\304\CO_GFC.c" />
+    <ClCompile Include="app\CANopenNode\304\CO_SRDO.c" />
+    <ClCompile Include="app\CANopenNode\305\CO_LSSmaster.c" />
+    <ClCompile Include="app\CANopenNode\305\CO_LSSslave.c" />
+    <ClCompile Include="app\CANopenNode\309\CO_gateway_ascii.c" />
+    <ClCompile Include="app\CANopenNode\CANopen.c" />
+    <ClCompile Include="app\CANopenNode\extra\CO_trace.c" />
+    <ClCompile Include="app\CANopenNode\storage\CO_storage.c" />
+    <ClCompile Include="app\CommInterface\CommInterface.c" />
+    <ClCompile Include="app\CommInterface\CompileTime.c" />
+    <ClCompile Include="app\CommInterface\Message.c" />
+    <ClCompile Include="app\ControlAlg\ControlSystem_v2.c" />
+    <ClCompile Include="app\ControlAlg\ControlSystem_v2_data.c" />
+    <ClCompile Include="app\ControlAlg\Identification.c" />
+    <ClCompile Include="app\ControlAlg\indTable.c" />
+    <ClCompile Include="app\ControlAlg\Logic.c" />
+    <ClCompile Include="app\ControlAlg\PIDs.c" />
+    <ClCompile Include="app\ControlAlg\Position_Observer.c" />
+    <ClCompile Include="app\ControlAlg\Protections.c" />
+    <ClCompile Include="app\ControlAlg\PWMcalc.c" />
+    <ClCompile Include="app\ControlAlg\TrqCalc.c" />
+    <ClCompile Include="app\ControlAlg\utils.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\event_groups.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\list.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\portable\GCC\ARM_CM4F\port.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\portable\MemMang\heap_4.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\queue.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\stream_buffer.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\tasks.c" />
+    <ClCompile Include="app\FreeRTOS-Kernel\timers.c" />
+    <ClCompile Include="app\CanOpenDrivers\canOpen.c" />
+    <ClCompile Include="app\CanOpenDrivers\CO_driverDrv.c" />
+    <ClCompile Include="app\CanOpenDrivers\CO_storageDrv.c" />
+    <ClCompile Include="app\CanOpenDrivers\OD.c" />
+    <ClCompile Include="app\FreeRtosTasks\WorkTasks.c" />
+    <ClCompile Include="bsp\at32f403a_407_board.c" />
+    <ClCompile Include="bsp\at32f403a_407_clock.c" />
+    <ClCompile Include="bsp\at32f403a_407_int.c" />
+    <ClCompile Include="cmsis\startup_at32f403a_407.s" />
+    <ClCompile Include="cmsis\system_at32f403a_407.c" />
+    <ClCompile Include="firmware\at32f403a_407_acc.c" />
+    <ClCompile Include="firmware\at32f403a_407_adc.c" />
+    <ClCompile Include="firmware\at32f403a_407_bpr.c" />
+    <ClCompile Include="firmware\at32f403a_407_can.c" />
+    <ClCompile Include="firmware\at32f403a_407_crc.c" />
+    <ClCompile Include="firmware\at32f403a_407_crm.c" />
+    <ClCompile Include="firmware\at32f403a_407_dac.c" />
+    <ClCompile Include="firmware\at32f403a_407_debug.c" />
+    <ClCompile Include="firmware\at32f403a_407_dma.c" />
+    <ClCompile Include="firmware\at32f403a_407_emac.c" />
+    <ClCompile Include="firmware\at32f403a_407_exint.c" />
+    <ClCompile Include="firmware\at32f403a_407_flash.c" />
+    <ClCompile Include="firmware\at32f403a_407_gpio.c" />
+    <ClCompile Include="firmware\at32f403a_407_i2c.c" />
+    <ClCompile Include="firmware\at32f403a_407_misc.c" />
+    <ClCompile Include="firmware\at32f403a_407_pwc.c" />
+    <ClCompile Include="firmware\at32f403a_407_rtc.c" />
+    <ClCompile Include="firmware\at32f403a_407_sdio.c" />
+    <ClCompile Include="firmware\at32f403a_407_spi.c" />
+    <ClCompile Include="firmware\at32f403a_407_tmr.c" />
+    <ClCompile Include="firmware\at32f403a_407_usart.c" />
+    <ClCompile Include="firmware\at32f403a_407_usb.c" />
+    <ClCompile Include="firmware\at32f403a_407_wdt.c" />
+    <ClCompile Include="firmware\at32f403a_407_wwdt.c" />
+    <ClCompile Include="firmware\at32f403a_407_xmc.c" />
+    <ClCompile Include="user\adcInit.c" />
+    <ClCompile Include="user\can2Init.c" />
+    <ClCompile Include="user\canInit.c" />
+    <ClCompile Include="user\CAN_DBC_MODULE\canDBCtask.c" />
+    <ClCompile Include="user\CAN_DBC_MODULE\CANDBCUtils.c" />
+    <ClCompile Include="user\CAN_DBC_MODULE\CANErrorsHandlers.c" />
+    <ClCompile Include="user\CAN_DBC_MODULE\CANSignalsMap.c" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DbcDispatcher.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuCurrentVoltage.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuDeratingStatus.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFailureCode.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature1.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature2.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuVCU1.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU01.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcuMCU02.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcutoMCUCurrentCommand.cpp" />
+    <ClCompile Include="user\flash.c" />
+    <ClCompile Include="user\getBoardSettings.c" />
+    <ClCompile Include="user\gpioInit.c" />
+    <ClCompile Include="user\main.c" />
+    <ClCompile Include="user\nvicInit.c" />
+    <ClCompile Include="user\pwmInit.c" />
+    <ClCompile Include="user\resolverInit.c" />
+    <ClCompile Include="user\tempSpiInit.c" />
+    <ClCompile Include="user\timerInit.c" />
+    <ClCompile Include="user\uartInit.c" />
+    <None Include="AT32_Base-Debug.vgdbsettings" />
+    <None Include="AT32_Base-Release.vgdbsettings" />
+    <None Include="stm32.props" />
+    <None Include="Описание_сигналов_инвертора_для_ARTERY_PATCH+датчик_модуля.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="MemoryMap.xml" />
+    <Xml Include="stm32.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <LinkerScript Include="ldscripts\AT32F403AxG_FLASH.ld" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="bsp\libarm_cortexM4lf_math.a" />
+  </ItemGroup>
+</Project>
