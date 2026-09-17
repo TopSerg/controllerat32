@@ -392,7 +392,7 @@ static void timerTickCall(void)
 	
 	TimIsrTime = CONVERT_toUs((startTick - GET_ACTUAL_TIMECNT())) * 1e6;
 	
-#if 1
+#if 0
 	DW_workModeChoise localDW = { 0 };
 	point++;
 	repeat++;
