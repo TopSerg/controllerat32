@@ -7,6 +7,7 @@
 #include "McuStatus.hpp"
 #include "McuCurrentVoltage.hpp"
 #include "McuFluxParams.hpp"
+#include "McuResolverCalibration.hpp"
 #include "McuDeratingStatus.hpp"
 #include "McuFailureCode.hpp"
 
@@ -19,8 +20,9 @@ McuTemperature2 mcuTemperature2;
 McuStatus mcuStatus;
 McuCurrentVoltage mcuCurrentVoltage;
 McuFluxParams mcuFluxParams;
+McuResolverCalibration mcuResolverCalibration;
 McuDeratingStatus mcuDeratingStatus;
 McuFailureCode mcuFailureCode;
 
 IMsgConv* rxArr[] = {&vcuMCU01, &vcuMCU02, &vcutoMCUCurrentCommand};
-IMsgConv* txArr[] = {&mcuVCU1, &mcuTemperature1, &mcuTemperature2, &mcuStatus, &mcuCurrentVoltage, &mcuFluxParams, &mcuDeratingStatus, &mcuFailureCode}; 
+IMsgConv* txArr[] = {&mcuVCU1, &mcuTemperature1, &mcuTemperature2, &mcuStatus, &mcuCurrentVoltage, &mcuFluxParams, &mcuResolverCalibration, &mcuDeratingStatus, &mcuFailureCode}; 

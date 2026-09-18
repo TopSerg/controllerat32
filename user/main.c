@@ -57,6 +57,7 @@
 #include "build/VcutoMCUCurrentCommand.h"
 #include "build/McuCurrentVoltage.h"
 #include "build/McuFluxParams.h"
+#include "build/McuResolverCalibration.h"
 
 #define PWM_FREQUENCY_HZ				10000
 #define PWM_TIME						(1.f/PWM_FREQUENCY_HZ)
@@ -268,6 +269,11 @@ static void timerTickCall(void)
 	cpT_McuCurrentVoltage_gstate->Iq = Control.Iq;
 	cpT_McuCurrentVoltage_gstate->Ud = Control.Ud;
 	cpT_McuCurrentVoltage_gstate->Uq = Control.Uq;
+	/* Raw centered ADC samples are required to calibrate offsets and gains. */
+	cpT_McuResolverCalibration_gstate->ResolverSine = (int16_t)adc_preempt_value[RES_SIN_CH] - 2048;
+	cpT_McuResolverCalibration_gstate->ResolverCosine = (int16_t)adc_preempt_value[RES_COS_CH] - 2048;
+	cpT_McuResolverCalibration_gstate->ResolverTheta = Control.ThetaElectrical;
+	cpT_McuResolverCalibration_gstate->ResolverThetaCorr = Control.ThetaElectrCorr;
 	(Control.stat.mod_Active) ? (cpT_McuStatus_gstate->McustGateDrv = McuStatusMCU_stGateDrvPWMrun) : (cpT_McuStatus_gstate->McustGateDrv = McuStatusMCU_stGateDrvFreeWheel);
 	(Control.stat.mod_Active) ? (cpT_McuStatus_gstate->McuVCUWorkMode = McuStatusMCU_VCUWorkModeTorqueControl) : (cpT_McuStatus_gstate->McuVCUWorkMode = McuStatusMCU_VCUWorkModeStandby);
 	/*Set Actual Derating bits*/

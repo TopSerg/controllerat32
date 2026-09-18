@@ -108,6 +108,7 @@
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\VcutoMCUCurrentCommand.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuCurrentVoltage.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <LinkerScript Include="ldscripts\AT32F403AxG_FLASH.ld" />
@@ -235,6 +236,8 @@
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuCurrentVoltage.hpp" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.h" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="bsp\libarm_cortexM4lf_math.a" />
