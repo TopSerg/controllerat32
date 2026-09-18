@@ -248,6 +248,8 @@
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFailureCode.hpp" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.h" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.hpp" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.h" />
+    <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.hpp" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.h" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.hpp" />
     <ClInclude Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature1.h" />
@@ -368,6 +370,7 @@
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuDeratingStatus.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFailureCode.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuFluxParams.cpp" />
+    <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuResolverCalibration.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuStatus.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature1.cpp" />
     <ClCompile Include="user\CAN_DBC_MODULE\DBC_MSG\build\McuTemperature2.cpp" />
