@@ -794,12 +794,13 @@ int main(void)
 	SystemParams.LagCorrection = 1.0;
 	SystemParams.MotorParams.motorLd = 47;
 	SystemParams.MotorParams.motorLq = 47;
-	SystemParams.StaticInductionFlg = false;
+	SystemParams.StaticInductionFlg = true;
 	SystemParams.MotorParams.motorRs = 0.015;
 	SystemParams.MotorParams.motorPoles = 4;
 	SystemParams.MotorParams.motorEmf = 0.095*SystemParams.MotorParams.motorPoles;
 	SystemParams.ResolverPoles = 2;
-	SystemParams.BW_reg_Inv = 6700;
+	SystemParams.BW_reg_Inv = 1000;
+	SystemParams.DecouplingEnable = 0U;
 	SystemParams.SpeedKp = 1.9;
 	SystemParams.SpeedKi = 0.005;
 	SystemParams.Rate_Down = 1500;
