@@ -38,7 +38,7 @@
 #define TRQ_MODEL_POLYNOMIAL_3     4
 
 #ifndef isFunk
-#define isFunk TRQ_MODEL_POLYNOMIAL_3
+#define isFunk TRQ_MODEL_LUT_DQ
 #endif
 
 /*

@@ -3,7 +3,7 @@
 #define MOTOR_RIGHT 1
 #define MOTOR_SMALL 2
 
-#define MOTOR_RESOLVER MOTOR_LEFT
+#define MOTOR_RESOLVER MOTOR_SMALL
 
 uint8_t getBoardSettings(boardAnalogSet_st * brd)
 {
