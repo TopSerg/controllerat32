@@ -9,3 +9,4 @@ Debug
 .visualgdb
 VisualGDB
 .vs
+/build/
