@@ -25,6 +25,9 @@ typedef struct c_McuFluxParams{
 
     float Zvflux;
     float Zvthetha;
+    float Zvelectricalspeed;
+    uint8_t Zvcalibrationstatus;
+    uint8_t Zvcalibrationacksequence;
 
 } c_McuFluxParams;
 

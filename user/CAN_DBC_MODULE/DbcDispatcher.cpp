@@ -8,6 +8,12 @@ extern "C"
 #include "CANdbcDriver.h"
 #include "CANSendDispatcher.h"
 #include "CANReceiveDispatcher.h"
+
+extern volatile uint8_t g_resolverCalibrationCommandEnable;
+extern volatile float g_resolverCalibrationThetaCommand;
+extern volatile uint32_t g_resolverCalibrationCommandLastTick;
+extern volatile uint8_t g_resolverCalibrationCommandSequence;
+extern volatile uint32_t timer1msTicks;
 }
 
 #define MCU_DEBUG_CYCLE 10
@@ -205,7 +211,27 @@ void DbcReceiver::processRx()
 		while (!IsReceiveQueueEmpty())
 		{
 			DequeueReceivePacket(&packet);
-			
+
+			/* Dedicated resolver-calibration command (CAN 0x301).
+			 * A magic word and a short keepalive timeout prevent stale/random
+			 * traffic from changing the electrical zero angle. */
+			if ((packet.message_id == 769U) && (packet.dlc >= 6U))
+			{
+				const uint32_t rawTheta = UnpackSignalFromCANPacket(&packet, 7, 16);
+				const uint8_t enable = (uint8_t)UnpackSignalFromCANPacket(&packet, 23, 8);
+				const uint8_t sequence = (uint8_t)UnpackSignalFromCANPacket(&packet, 31, 8);
+				const uint16_t magic = (uint16_t)UnpackSignalFromCANPacket(&packet, 47, 16);
+				const float thetaCorrection = ((float)rawTheta * 0.0001f) - 3.2768f;
+				if ((magic == 0xCA1BU) && (enable <= 1U) &&
+					(thetaCorrection >= -3.2768f) && (thetaCorrection <= 3.2767f))
+				{
+					g_resolverCalibrationThetaCommand = thetaCorrection;
+					g_resolverCalibrationCommandSequence = sequence;
+					g_resolverCalibrationCommandLastTick = timer1msTicks;
+					g_resolverCalibrationCommandEnable = enable;
+				}
+				continue;
+			}
 
 			for (auto &el : rxArr) {
 				el->tryMsgParse(&packet);

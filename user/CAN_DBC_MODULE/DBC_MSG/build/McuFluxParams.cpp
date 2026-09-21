@@ -16,17 +16,23 @@ c_McuFluxParams c_McuFluxParams_gstate;
 c_McuFluxParams* cpT_McuFluxParams_gstate = &c_McuFluxParams_gstate;
 
 void McuFluxParams::saturateAdj() {
-    this->Zvflux = (float)SaturateSignalFloat(this->Zvflux, 0, 6);
-    this->Zvthetha = (float)SaturateSignalFloat(this->Zvthetha, 0, 6);
+    this->Zvflux = (float)SaturateSignalFloat(this->Zvflux, 0, 6.5535);
+    this->Zvthetha = (float)SaturateSignalFloat(this->Zvthetha, 0, 6.5535);
+    this->Zvelectricalspeed = (float)SaturateSignalFloat(this->Zvelectricalspeed, -3276.8, 3276.7);
+    this->Zvcalibrationstatus = (uint8_t)SaturateSignalInteger(this->Zvcalibrationstatus, 0, 255);
+    this->Zvcalibrationacksequence = (uint8_t)SaturateSignalInteger(this->Zvcalibrationacksequence, 0, 255);
 };
 void McuFluxParams::rawPack(dbc_can_tx_message_type* transmitPacket) {
 
-    transmitPacket->message_id = 127;
+    transmitPacket->message_id = 130;
 
 	ClearCANDataField(transmitPacket);
 
     PackSignalToCANPacket(transmitPacket, (uint32_t)((this->Zvflux - 0) / 0.0001), 7, 16);
     PackSignalToCANPacket(transmitPacket, (uint32_t)((this->Zvthetha - 0) / 0.0001), 23, 16);
+    PackSignalToCANPacket(transmitPacket, (uint32_t)((this->Zvelectricalspeed - -3276.8) / 0.1), 39, 16);
+    PackSignalToCANPacket(transmitPacket, (uint32_t)this->Zvcalibrationstatus, 55, 8);
+    PackSignalToCANPacket(transmitPacket, (uint32_t)this->Zvcalibrationacksequence, 63, 8);
 };
 
 void McuFluxParams::pack(dbc_can_tx_message_type* transmitPacket){
@@ -46,6 +52,9 @@ void McuFluxParams::UpdateGlobalState()
 {
         cpT_McuFluxParams_gstate->Zvflux = this->Zvflux;
     cpT_McuFluxParams_gstate->Zvthetha = this->Zvthetha;
+    cpT_McuFluxParams_gstate->Zvelectricalspeed = this->Zvelectricalspeed;
+    cpT_McuFluxParams_gstate->Zvcalibrationstatus = this->Zvcalibrationstatus;
+    cpT_McuFluxParams_gstate->Zvcalibrationacksequence = this->Zvcalibrationacksequence;
 
 }
 
@@ -53,6 +62,9 @@ void McuFluxParams::ReadGlobalState()
 {
         this->Zvflux = cpT_McuFluxParams_gstate->Zvflux;
     this->Zvthetha = cpT_McuFluxParams_gstate->Zvthetha;
+    this->Zvelectricalspeed = cpT_McuFluxParams_gstate->Zvelectricalspeed;
+    this->Zvcalibrationstatus = cpT_McuFluxParams_gstate->Zvcalibrationstatus;
+    this->Zvcalibrationacksequence = cpT_McuFluxParams_gstate->Zvcalibrationacksequence;
 
 }
     
@@ -60,14 +72,24 @@ c_McuFluxParams McuFluxParams::toc_McuFluxParams(){
     c_McuFluxParams out;
     out.Zvflux = this->Zvflux;
     out.Zvthetha = this->Zvthetha;
+    out.Zvelectricalspeed = this->Zvelectricalspeed;
+    out.Zvcalibrationstatus = this->Zvcalibrationstatus;
+    out.Zvcalibrationacksequence = this->Zvcalibrationacksequence;
     return out;
 };
 
 
-McuFluxParams::McuFluxParams(c_McuFluxParams* self):Zvflux(self->Zvflux), Zvthetha(self->Zvthetha){};
+McuFluxParams::McuFluxParams(c_McuFluxParams* self)
+    : Zvflux(self->Zvflux), Zvthetha(self->Zvthetha),
+      Zvelectricalspeed(self->Zvelectricalspeed),
+      Zvcalibrationstatus(self->Zvcalibrationstatus),
+      Zvcalibrationacksequence(self->Zvcalibrationacksequence){};
 McuFluxParams::McuFluxParams(dbc_can_rx_message_type* receivedPacket, LocalErrorStats errStats){
     this->Zvflux = (float)(UnpackSignalFromCANPacket(receivedPacket, 7, 16) * 0.0001 + 0);
     this->Zvthetha = (float)(UnpackSignalFromCANPacket(receivedPacket, 23, 16) * 0.0001 + 0);
+    this->Zvelectricalspeed = (float)(UnpackSignalFromCANPacket(receivedPacket, 39, 16) * 0.1 - 3276.8);
+    this->Zvcalibrationstatus = (uint8_t)UnpackSignalFromCANPacket(receivedPacket, 55, 8);
+    this->Zvcalibrationacksequence = (uint8_t)UnpackSignalFromCANPacket(receivedPacket, 63, 8);
 };
 
 void McuFluxParams::msgPrepare(dbc_can_tx_message_type* transmitPacket) {

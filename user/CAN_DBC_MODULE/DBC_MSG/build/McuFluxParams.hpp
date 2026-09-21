@@ -13,9 +13,12 @@ class McuFluxParams : public IMsgConv
 public:
     float Zvflux;
     float Zvthetha;
+    float Zvelectricalspeed;
+    uint8_t Zvcalibrationstatus;
+    uint8_t Zvcalibrationacksequence;
 
     LocalErrorStats errStats = {};
-    static const int cycleTime = 500;
+    static const int cycleTime = 20;
     static const int cycleTimeReceiveGap = 10;
 
     int cycleTimeRemain = cycleTime;
@@ -35,7 +38,7 @@ public:
 
 
 private:
-    static const int ownCanId = 127;
+    static const int ownCanId = 130;
 
 
 	void saturateAdj();
