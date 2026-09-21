@@ -102,7 +102,7 @@ SECTIONS
   .generatedCode : 
   { 
     . = ALIGN(4);
-    *indTable.o (.rodata .rodata*) 
+    *indTable* (.rodata .rodata*)
     . = ALIGN(4); 
   }  > TABLES /* new section for my special code files */
 

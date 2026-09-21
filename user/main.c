@@ -196,6 +196,15 @@ static void calcTmotor(void)
 WorkModeType workMode = CURRENT;
 volatile uint32_t timer1msTicks = 0;
 volatile uint16_t startUpDone = 0;
+
+/* Resolver zero-angle calibration command (CAN 0x301).
+ * The override is RAM-only and automatically expires if keepalive frames stop. */
+volatile uint8_t g_resolverCalibrationCommandEnable = 0;
+volatile float g_resolverCalibrationThetaCommand = 0.0f;
+volatile uint32_t g_resolverCalibrationCommandLastTick = 0;
+volatile uint8_t g_resolverCalibrationCommandSequence = 0;
+float g_resolverCalibrationDefaultThetaCorrection = 0.0f;
+#define RESOLVER_CALIBRATION_COMMAND_TIMEOUT_MS (250U)
 float timer1msTicksf = 0;
 float TimIsrTime = 0;
 uint16_t debug_tork;
@@ -226,6 +235,19 @@ static void timerTickCall(void)
 	startTick = GET_ACTUAL_TIMECNT();
 	timer1msTicks++;
 	timer1msTicksf = timer1msTicks;
+
+	/* Apply only a fresh, explicitly enabled calibration command. */
+	if (g_resolverCalibrationCommandEnable &&
+		((uint32_t)(timer1msTicks - g_resolverCalibrationCommandLastTick) <=
+		 RESOLVER_CALIBRATION_COMMAND_TIMEOUT_MS))
+	{
+		SystemParameters.correctionTheta = g_resolverCalibrationThetaCommand;
+	}
+	else
+	{
+		g_resolverCalibrationCommandEnable = 0;
+		SystemParameters.correctionTheta = g_resolverCalibrationDefaultThetaCorrection;
+	}
 	
 	if (!(timer1msTicks % 100))
 	{
@@ -286,14 +308,23 @@ static void timerTickCall(void)
 	cpT_McuDeratingStatus_gstate->McubDernStrTemp = Control.actLimits.motorTlimFlg;
 	
 	Rs = Control.motorParams.motorRs;
-	float flux = Control.motorEmfCalc / Control.Welectrical;
-	float Ld = (Control.motorParams.motorRs * Control.Id - Control.Ud) / (Control.Wmechanical * Control.Iq);
-	float Lq = (- Control.motorParams.motorRs * Control.Iq + Control.Uq - flux) / (Control.Wmechanical * Control.Iq);
-	
-	/*cpT_McuFluxParams_gstate->Emf = Control.motorEmfCalc;
-	cpT_McuFluxParams_gstate->Motorrs = Control.motorParams.motorRs;
-	cpT_McuFluxParams_gstate->Welectrical = Control.Welectrical;
-	cpT_McuFluxParams_gstate->Wmechanical = Control.Wmechanical;*/
+
+	/* CAN 0x082: the actual signals required for resolver zero-angle calibration.
+	 * Angles are wrapped to [0, 2*pi) for unsigned DBC transport and unwrapped
+	 * back to [-pi, pi] by the stand. */
+	float fluxPositionErrorWrapped = Control.motorFluxPosError;
+	float thetaCorrectionWrapped = SystemParameters.correctionTheta;
+	while (fluxPositionErrorWrapped < 0.0f) fluxPositionErrorWrapped += TwoPI;
+	while (fluxPositionErrorWrapped >= TwoPI) fluxPositionErrorWrapped -= TwoPI;
+	while (thetaCorrectionWrapped < 0.0f) thetaCorrectionWrapped += TwoPI;
+	while (thetaCorrectionWrapped >= TwoPI) thetaCorrectionWrapped -= TwoPI;
+	cpT_McuFluxParams_gstate->Zvflux = fluxPositionErrorWrapped;
+	cpT_McuFluxParams_gstate->Zvthetha = thetaCorrectionWrapped;
+	cpT_McuFluxParams_gstate->Zvelectricalspeed = Control.Welectrical;
+	cpT_McuFluxParams_gstate->Zvcalibrationstatus =
+		((platform_abs(Control.Welectrical) > 300.0f) ? 0x01U : 0x00U) |
+		(g_resolverCalibrationCommandEnable ? 0x02U : 0x00U);
+	cpT_McuFluxParams_gstate->Zvcalibrationacksequence = g_resolverCalibrationCommandSequence;
 	
 	/* Set ERRORS*/
 	if (Control.errors.GlobalError)
@@ -858,6 +889,7 @@ int main(void)
 	SystemParams.Observer_LO = 0.985;
 	
 #endif
+	g_resolverCalibrationDefaultThetaCorrection = SystemParams.correctionTheta;
 	/* Initialize model */
 	ControlSystem_v2_initialize();
 	
