@@ -44,6 +44,7 @@
 #include "canOpen_lib.h"
 #include "canDBCtask.h"
 #include "getBoardSettings.h"
+#include "qs138Commissioning.h"
 #include "DbcDispatcher.h"
 
 #include "build/McuTemperature1.h"
@@ -196,6 +197,7 @@ static void calcTmotor(void)
 WorkModeType workMode = CURRENT;
 volatile uint32_t timer1msTicks = 0;
 volatile uint16_t startUpDone = 0;
+volatile uint8_t g_resolverSignalsReady = 0U;
 
 /* Resolver zero-angle calibration command (CAN 0x301).
  * The override is RAM-only and automatically expires if keepalive frames stop. */
@@ -205,6 +207,10 @@ volatile uint32_t g_resolverCalibrationCommandLastTick = 0;
 volatile uint8_t g_resolverCalibrationCommandSequence = 0;
 float g_resolverCalibrationDefaultThetaCorrection = 0.0f;
 #define RESOLVER_CALIBRATION_COMMAND_TIMEOUT_MS (250U)
+
+/* Updated by the 0x300 DBC parser for every complete received frame. */
+extern volatile uint32_t g_vcuCurrentCommandRxSequence;
+static uint8_t g_currentCommandTimeoutFault = 0U;
 float timer1msTicksf = 0;
 float TimIsrTime = 0;
 uint16_t debug_tork;
@@ -232,9 +238,46 @@ float32_t sum = 0;
 static void timerTickCall(void)
 {
 	static uint32_t startTick = 0;
+	static uint32_t currentCommandLastRxSequence = 0;
+	static uint32_t currentCommandLastRxTick = 0;
+	static uint8_t currentCommandWasEnabled = 0U;
+	static uint8_t currentCommandLastCounter = 0U;
+	static uint8_t currentCommandCounterSeen = 0U;
+	static uint8_t currentCommandCounterFault = 0U;
 	startTick = GET_ACTUAL_TIMECNT();
 	timer1msTicks++;
 	timer1msTicksf = timer1msTicks;
+
+	if (g_vcuCurrentCommandRxSequence != currentCommandLastRxSequence)
+	{
+		const uint8_t receivedCounter =
+			cpT_VcutoMCUCurrentCommand_gstate->Messagecounter300 & 0x0FU;
+		if (currentCommandCounterSeen != 0U)
+		{
+			const uint8_t expectedCounter =
+				(uint8_t)((currentCommandLastCounter + 1U) & 0x0FU);
+			currentCommandCounterFault =
+				(receivedCounter != expectedCounter) ? 1U : 0U;
+		}
+		currentCommandLastCounter = receivedCounter;
+		currentCommandCounterSeen = 1U;
+		currentCommandLastRxSequence = g_vcuCurrentCommandRxSequence;
+		currentCommandLastRxTick = timer1msTicks;
+		if (cpT_VcutoMCUCurrentCommand_gstate->VcuCurrentCommandEnable != 0U)
+		{
+			currentCommandWasEnabled = 1U;
+		}
+	}
+
+	const uint8_t currentCommandIsFresh =
+		(currentCommandLastRxSequence != 0U) &&
+		((uint32_t)(timer1msTicks - currentCommandLastRxTick) <=
+		 QS138_CURRENT_COMMAND_TIMEOUT_MS);
+	const uint8_t currentCommandIsRequested =
+		(cpT_VcutoMCUCurrentCommand_gstate->VcuCurrentCommandEnable != 0U);
+	g_currentCommandTimeoutFault =
+		(currentCommandWasEnabled && currentCommandIsRequested &&
+		 !currentCommandIsFresh) ? 1U : 0U;
 
 	/* Apply only a fresh, explicitly enabled calibration command. */
 	if (g_resolverCalibrationCommandEnable &&
@@ -323,7 +366,8 @@ static void timerTickCall(void)
 	cpT_McuFluxParams_gstate->Zvelectricalspeed = Control.Welectrical;
 	cpT_McuFluxParams_gstate->Zvcalibrationstatus =
 		((platform_abs(Control.Welectrical) > 300.0f) ? 0x01U : 0x00U) |
-		(g_resolverCalibrationCommandEnable ? 0x02U : 0x00U);
+		(g_resolverCalibrationCommandEnable ? 0x02U : 0x00U) |
+		(g_resolverSignalsReady ? 0x04U : 0x00U);
 	cpT_McuFluxParams_gstate->Zvcalibrationacksequence = g_resolverCalibrationCommandSequence;
 	
 	/* Set ERRORS*/
@@ -358,25 +402,12 @@ static void timerTickCall(void)
 	cpT_McuTemperature2_gstate->McuTempCurrCool = inSignals.TheatSink;
 	cpT_McuTemperature2_gstate->McuTempCurrStr = inSignals.Tmotor;
 	
-	bool isOverspeedFault = false;
-	
-	if (Control.Wmechanical > 6000*20*PI)
-	{
-		isOverspeedFault = true;
-	}
-	
-	if (Control.Wmechanical <= 0)
-	{
-		isOverspeedFault = false;
-	}
-	
-	TestRefSignals.testActive = cpT_VcutoMCUCurrentCommand_gstate->VcuCurrentCommandEnable;
-	
-	if (TestRefSignals.testActive && !isOverspeedFault)
-	{
-		TestRefSignals.IdTest = cpT_VcutoMCUCurrentCommand_gstate->VcuIdCommand;
-		TestRefSignals.IqTest = cpT_VcutoMCUCurrentCommand_gstate->VcuIqCommand;
-	}
+	const bool isOverspeedFault =
+		(platform_abs(Control.Wmechanical) >
+		 QS138_COMMISSIONING_MAX_SPEED_RAD_S);
+	cpT_McuFailureCode_gstate->McuCANFault =
+		(g_currentCommandTimeoutFault ? 0x01U : 0x00U) |
+		(currentCommandCounterFault ? 0x02U : 0x00U);
 
 	extRef.cmd = cpT_VcuMCU01_gstate->VcuMCURequestedState + (workMode << 4);
 	extRef.limitHigh = cpT_VcuMCU02_gstate->VcuMaxTorqueLimit;
@@ -402,6 +433,11 @@ static void timerTickCall(void)
 		extRef.cmd = 0 + (workMode << 4);
 		extRef.refValue = 0;
 	}
+	if (g_currentCommandTimeoutFault != 0U)
+	{
+		extRef.cmd = 0 + (workMode << 4);
+		extRef.refValue = 0.0F;
+	}
 	/* CAN communication control*/
 	
 	
@@ -426,6 +462,36 @@ static void timerTickCall(void)
 #endif
 	/* Call to exported function */
 	isrTIM();
+
+	/* isrTIM() writes the identification structure to TestRefSignals. Apply
+	 * the direct-current command afterwards so it is not immediately erased.
+	 * On timeout or overspeed the references are explicitly brought to zero. */
+	if (currentCommandIsRequested)
+	{
+		const bool directCurrentCommandAllowed =
+			(currentCommandIsFresh != 0U) &&
+			(g_resolverSignalsReady != 0U) &&
+			!isOverspeedFault;
+		TestRefSignals.testActive = directCurrentCommandAllowed;
+		TestRefSignals.fixedAngle = false;
+		TestRefSignals.voltageControl = false;
+		if (directCurrentCommandAllowed)
+		{
+			TestRefSignals.IdTest = platform_max(
+				-QS138_MAX_PHASE_CURRENT_A,
+				platform_min(QS138_MAX_PHASE_CURRENT_A,
+					cpT_VcutoMCUCurrentCommand_gstate->VcuIdCommand));
+			TestRefSignals.IqTest = platform_max(
+				-QS138_MAX_PHASE_CURRENT_A,
+				platform_min(QS138_MAX_PHASE_CURRENT_A,
+					cpT_VcutoMCUCurrentCommand_gstate->VcuIqCommand));
+		}
+		else
+		{
+			TestRefSignals.IdTest = 0.0F;
+			TestRefSignals.IqTest = 0.0F;
+		}
+	}
 	
 	TimIsrTime = CONVERT_toUs((startTick - GET_ACTUAL_TIMECNT())) * 1e6;
 	
@@ -491,9 +557,9 @@ uint32_t adcIsrtCnt = 0;
  * @retval none
  */
 PWM_st testPWM = { 0 };
-#define SMALL_STEND 0
+#define QS138_COMMISSIONING_PROFILE 1
 
-#if SMALL_STEND
+#if QS138_COMMISSIONING_PROFILE
 #define UDC_CH_K1 (0.1887f)
 #define UDC_CH_K2 (+7.84f)
 #else
@@ -525,6 +591,7 @@ void adcCall(void)
 	{
 		tmr_counter_enable(TMR8, TRUE);
 		tmr_output_enable(TMR8, TRUE);
+		g_resolverSignalsReady = 1U;
 		
 	}
 	tmr_counter_value_set(TMR8, baseCval);	
@@ -759,41 +826,48 @@ int main(void)
 	boardAnalog.boardCPU_ID_High = *((uint32_t*)UID_ADDR_HIGH);
 	if (!getBoardSettings(&boardAnalog)) cpT_McuFailureCode_gstate->McuHardwareFault = 1;
 	
-#if SMALL_STEND
-	/*Update defaut settings to New*/
+#if QS138_COMMISSIONING_PROFILE
+	/* Conservative first-start profile for the QS138 on the small stand. */
 	SystemParams = ConstP_d.pooled2;
 	SystemParams.PwmBaseFrq = PWM_FREQUENCY_HZ;
-	SystemParams.LagCorrection = 1.0;
-	SystemParams.MotorParams.motorLd = 47;
-	SystemParams.MotorParams.motorLq = 47;
+	SystemParams.LagCorrection = 1.0F;
+	SystemParams.MotorParams.motorType = IPSM;
+	SystemParams.MotorParams.motorLd = QS138_LD_UH;
+	SystemParams.MotorParams.motorLq = QS138_LQ_UH;
 	SystemParams.StaticInductionFlg = true;
-	SystemParams.MotorParams.motorRs = 0.02;
-	SystemParams.MotorParams.motorPoles = 5;
-	SystemParams.MotorParams.motorEmf = 0.053*SystemParams.MotorParams.motorPoles;
-	SystemParams.ResolverPoles = 5;
-	SystemParams.BW_reg_Inv = 4000;
-	SystemParams.SpeedKp = 0.7;
-	SystemParams.SpeedKi = 0.005;
-	SystemParams.Rate_Down = 1500;
-	SystemParams.Rate_Up = 1500;
+	SystemParams.MotorParams.motorRs = QS138_PHASE_RESISTANCE_OHM;
+	SystemParams.MotorParams.motorPoles = QS138_MOTOR_POLE_PAIRS;
+	SystemParams.MotorParams.motorEmf = QS138_LINE_LINE_EMF_CONSTANT;
+	SystemParams.ResolverPoles = QS138_RESOLVER_CYCLES_PER_MECH_REV;
+	SystemParams.BW_reg_Inv = QS138_CURRENT_LOOP_BANDWIDTH_RAD_S;
+	SystemParams.DecouplingEnable = 0U;
+	SystemParams.SpeedKp = 0.7F;
+	SystemParams.SpeedKi = 0.005F;
+	SystemParams.Rate_Down = 50.0F;
+	SystemParams.Rate_Up = 50.0F;
 	/*Для стендовой спарки - право */
 	baseCval = boardAnalog.resolverBase; // Корректировка выборки для резольвера
 	SystemParams.correctionTheta = boardAnalog.resolverShift;
 	SystemParams.ResolverSignalSwap = boardAnalog.resolverSwap;
 	
 	/*FunctionalLimit settings*/
-	SystemParams.MaxCurrent = 80;
-	SystemParams.MinIdCurrent = 60;
-	SystemParams.MaxCharge = 10;
-	SystemParams.MaxDischarge = 10;
-	SystemParams.FuncLimits.Udc_low = 40;
-	SystemParams.FuncLimits.Udc_low_diap = 10;
-	SystemParams.FuncLimits.Udc_high = 80;
-	SystemParams.FuncLimits.Udc_high_diap = 5;
-	SystemParams.FuncLimits.Speed_fwd = 6700;
-	SystemParams.FuncLimits.Speed_fwd_diap = 500;
-	SystemParams.FuncLimits.Speed_rev = 800;
-	SystemParams.FuncLimits.Speed_rev_diap = 500;
+	SystemParams.MaxCurrent = QS138_MAX_PHASE_CURRENT_A;
+	SystemParams.MaxIdCurrent = QS138_MAX_D_AXIS_CURRENT_A;
+	SystemParams.MinIdCurrent = QS138_MAX_D_AXIS_CURRENT_A;
+	SystemParams.MaxCharge = QS138_MAX_DC_CHARGE_CURRENT_A;
+	SystemParams.MaxDischarge = QS138_MAX_DC_DISCHARGE_CURRENT_A;
+	SystemParams.FuncLimits.Udc_low = QS138_UDC_LOW_LIMIT_V;
+	SystemParams.FuncLimits.Udc_low_diap = QS138_UDC_LOW_DERATING_RANGE_V;
+	SystemParams.FuncLimits.Udc_high = QS138_UDC_HIGH_LIMIT_V;
+	SystemParams.FuncLimits.Udc_high_diap = QS138_UDC_HIGH_DERATING_RANGE_V;
+	SystemParams.FuncLimits.Speed_fwd = (int16_t)QS138_COMMISSIONING_MAX_SPEED_RAD_S;
+	SystemParams.FuncLimits.Speed_fwd_diap = QS138_SPEED_DERATING_RANGE_RAD_S;
+	SystemParams.FuncLimits.Speed_rev = (uint16_t)QS138_COMMISSIONING_MAX_SPEED_RAD_S;
+	SystemParams.FuncLimits.Speed_rev_diap = QS138_SPEED_DERATING_RANGE_RAD_S;
+	SystemParams.FuncLimits.Igbt_Thigh = 80;
+	SystemParams.FuncLimits.Igbt_Thigh_diap = 10;
+	SystemParams.FuncLimits.Motor_Thigh = 100;
+	SystemParams.FuncLimits.Motor_Thigh_diap = 10;
 	
 	/*						  1  2  3  4  5  6		*/
 	uint16_t const hallArray[6] = { 1, 3, 2, 5, 6, 4 };
@@ -819,10 +893,7 @@ int main(void)
 	
 
 	SystemParams.ActivePosSensor = ResolverType;
-	SystemParams.Observer_LO = 0.985;
-	
-	TripLevels.OverCurrent_level = 110;
-	TripLevels.OverVoltage_level = 90;
+	SystemParams.Observer_LO = 0.985F;
 	
 #else
 	/*Update defaut settings to New*/
@@ -894,10 +965,10 @@ int main(void)
 	ControlSystem_v2_initialize();
 	
 
-	TripLevels.OverCurrent_level = 750;
-	TripLevels.OverVoltage_level = 390;
+	TripLevels.OverCurrent_level = QS138_OVERCURRENT_TRIP_A;
+	TripLevels.OverVoltage_level = QS138_OVERVOLTAGE_TRIP_V;
 	TripLevels.OverTemp_power_level = 100;
-	TripLevels.OverTemp_motor_level = 180;
+	TripLevels.OverTemp_motor_level = 120;
 
 	/* enable tmr8 */
 	//tmr_counter_enable(TMR8, TRUE);

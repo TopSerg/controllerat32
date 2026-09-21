@@ -42,14 +42,11 @@
 #endif
 
 /*
- * The notebook models predict motor-shaft torque.
- *
- * The current COTM implementation used 58.59 = 1.5 * 4 * 9.765,
- * therefore this file keeps the gearbox/output-shaft scaling for every
- * selectable model. Set TRQ_MODEL_OUTPUT_SCALE to 1.0F if TrqCalc must
- * return motor-shaft torque instead.
+ * All models return motor-shaft torque.  The former 9.765 gearbox scale
+ * belonged to another drivetrain and must not be applied to the direct-shaft
+ * QS138.
  */
-#define TRQ_MODEL_OUTPUT_SCALE     9.765F
+#define TRQ_MODEL_OUTPUT_SCALE     1.0F
 
 /*
  * Polynomial preprocessing from total.ipynb:
@@ -278,23 +275,27 @@ void TrqCalc(real32_T Id,
 	Id_f = localDW->UnitDelay_DSTATE;
 	Iq_f = localDW->UnitDelay_DSTATE_n;
 
+	/* These fields are also exported as the active motor inductances.  Give
+	 * every torque model valid values instead of leaking the Iq filter state
+	 * through Merge_e/Merge1_i when a non-table model is selected. */
+	localDW->Merge_e = motorLq_k;
+	localDW->Merge1_i = motorLd_g;
+	localDW->Add_ct = motorLd_g - motorLq_k;
+
 #if (isFunk == TRQ_MODEL_LUT_DQ)
 
 	{
 		real32_T torque_factor;
 		real32_T torque_reluctance;
 
-		/* Outputs for Atomic SubSystem: '<S376>/LdLq_Tables' */
-		LdLq_Tables(
-		  Id_f,
-			Iq_f,
-			&localDW->Merge_e,
-			&localDW->Merge1_i,
-			&localDW->LdLq_Tables_h);
-
-		if (SystemParameters.StaticInductionFlg > 0U) {
-			localDW->Merge_e = motorLq_k;
-			localDW->Merge1_i = motorLd_g;
+		if (SystemParameters.StaticInductionFlg == 0U) {
+			/* Outputs for Atomic SubSystem: '<S376>/LdLq_Tables' */
+			LdLq_Tables(
+			  Id_f,
+				Iq_f,
+				&localDW->Merge_e,
+				&localDW->Merge1_i,
+				&localDW->LdLq_Tables_h);
 		}
 
 		localDW->Add_ct =

@@ -14,6 +14,7 @@ extern volatile float g_resolverCalibrationThetaCommand;
 extern volatile uint32_t g_resolverCalibrationCommandLastTick;
 extern volatile uint8_t g_resolverCalibrationCommandSequence;
 extern volatile uint32_t timer1msTicks;
+volatile uint32_t g_vcuCurrentCommandRxSequence = 0U;
 }
 
 #define MCU_DEBUG_CYCLE 10
@@ -212,6 +213,18 @@ void DbcReceiver::processRx()
 		{
 			DequeueReceivePacket(&packet);
 
+			/* The direct-current command must be a complete 8-byte frame.  Count
+			 * each accepted frame independently of its payload counter so main.c
+			 * can fail safe when the sender or CAN link stops. */
+			const bool isCurrentCommandFrame = (packet.message_id == 768U);
+			if (isCurrentCommandFrame)
+			{
+				if (packet.dlc < 8U)
+				{
+					continue;
+				}
+			}
+
 			/* Dedicated resolver-calibration command (CAN 0x301).
 			 * A magic word and a short keepalive timeout prevent stale/random
 			 * traffic from changing the electrical zero angle. */
@@ -236,6 +249,10 @@ void DbcReceiver::processRx()
 			for (auto &el : rxArr) {
 				el->tryMsgParse(&packet);
 				dispatcher->loopCounter += el->errStats.timeOut;
+			}
+			if (isCurrentCommandFrame)
+			{
+				++g_vcuCurrentCommandRxSequence;
 			}
 			if (dispatcher->UnexpectedID_Callback != 0)
 				dispatcher->UnexpectedID_Callback(&packet);

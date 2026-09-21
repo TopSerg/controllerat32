@@ -17,7 +17,9 @@ public:
     float Iq;
 
     LocalErrorStats errStats = {};
-    static const int cycleTime = 500;
+    /* 50 Hz is fast enough to see commissioning transients without changing
+     * the existing CAN message layout or the stand application. */
+    static const int cycleTime = 20;
     static const int cycleTimeReceiveGap = 10;
 
     int cycleTimeRemain = cycleTime;

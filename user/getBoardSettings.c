@@ -1,9 +1,9 @@
 #include "getBoardSettings.h"
 #define MOTOR_LEFT  0
 #define MOTOR_RIGHT 1
-#define MOTOR_SMALL 2
+#define MOTOR_QS138 2
 
-#define MOTOR_RESOLVER MOTOR_SMALL
+#define MOTOR_RESOLVER MOTOR_QS138
 
 uint8_t getBoardSettings(boardAnalogSet_st * brd)
 {
@@ -68,7 +68,9 @@ uint8_t getBoardSettings(boardAnalogSet_st * brd)
 	
 #endif
 	
-#if MOTOR_RESOLVER == MOTOR_SMALL
+#if MOTOR_RESOLVER == MOTOR_QS138
+	/* PROVISIONAL QS138 SIN/COS front-end timing and electrical zero. The
+	 * shift can be changed safely at runtime through calibration CAN 0x301. */
 	brd->resolverBase = 1200;
 	brd->resolverSwap = 0;
 	brd->resolverShift = 2.7;

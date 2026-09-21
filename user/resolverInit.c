@@ -7,7 +7,9 @@
 #define TIMER_FEQ 1000000u
 #define SIN_ARRAY_SIZE 100
 #define SIN_FREQ 10000
+#ifndef M_PI
 #define M_PI 3.1415926535f
+#endif
 #define M_2PI 6.283185307f
 volatile uint16_t sinArray[SIN_ARRAY_SIZE];
 static void initSineTable()

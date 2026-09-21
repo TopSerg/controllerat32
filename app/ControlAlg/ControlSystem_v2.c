@@ -874,7 +874,20 @@ void isrADC(void)
      *  DataTypeConversion: '<S211>/Data Type Conversion4'
      */
     Switch1_e = TestRefSignals.ThetaElTest;
-	Switch1_e = Control.ThetaElectrical + SystemParameters.correctionTheta;
+	if (!fixedAngle) {
+	  if (SystemParameters.phase_inverse > 0U) {
+	    Switch1_e = Control.ThetaElectrical - 2.09439516F -
+	      SystemParameters.correctionTheta;
+	  } else {
+	    Switch1_e = Control.ThetaElectrical + SystemParameters.correctionTheta;
+	  }
+	}
+	while (Switch1_e >= TwoPI) {
+	  Switch1_e -= TwoPI;
+	}
+	while (Switch1_e < 0.0F) {
+	  Switch1_e += TwoPI;
+	}
     /* End of Outputs for SubSystem: '<S206>/Switch Case Action Subsystem1' */
   } else {
     /* Outputs for IfAction SubSystem: '<S206>/Switch Case Action Subsystem' incorporates:
