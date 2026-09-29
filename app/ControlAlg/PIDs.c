@@ -245,6 +245,19 @@ void PID_fw(const PID_st *PID_in, PID_st *PID_out)
      */
     Ui = 0.0F;
 
+    /*
+     * Field weakening is disabled when defaultBit is set.
+     * Reset the complete controller output, not only the integrator.
+     */
+    *PID_out = *PID_in;
+    PID_out->SatErr = 0.0F;
+    PID_out->Out = 0.0F;
+    PID_out->Ui = 0.0F;
+    PID_out->OutPreSat = 0.0F;
+    PID_out->Up = 0.0F;
+    PID_out->err = Err;
+    return;
+
     /* End of Outputs for SubSystem: '<S70>/Ui=0' */
   }
 
