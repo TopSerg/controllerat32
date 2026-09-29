@@ -1517,7 +1517,8 @@ void isrADC(void)
   PID_FW.defaultBit = ((Control.UmodActual <= (0.1F * Control_f5_UdcFiltered)) ||
                        PID_FW_tmp);
   PID_FW.OutMin = -SystemParameters.MinIdCurrent;
-  PID_FW.OutMax = SystemParameters.MaxIdCurrent;
+  /* Field weakening may only inject negative Id. */
+  PID_FW.OutMax = 0.0F;
 
   /* Outputs for Atomic SubSystem: '<S23>/PID_fw' */
   PID_fw(&PID_FW, &PID_FW);
