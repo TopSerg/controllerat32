@@ -348,6 +348,10 @@ void ADC1_2_IRQHandler(void)
 		ADC1,
 			chPreemptSettings[UDC_CH].chSequence);
 		
+		adc_preempt_value[RES_SIN_CH] = adc_preempt_conversion_data_get_local(
+		ADC1,
+			chPreemptSettings[RES_SIN_CH].chSequence);
+		
 		//adc_flag_clear_local(ADC1, ADC_PCCE_FLAG);
 	}
 
