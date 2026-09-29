@@ -217,7 +217,7 @@ void adcInit(bool isrEna)
 	adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
 	adc_base_config(ADC2, &adc_base_struct);
 
-	adc_preempt_channel_length_set(ADC2, 4);
+	adc_preempt_channel_length_set(ADC2, 2);
 	adc_preempt_channel_set(ADC2,
 		chPreemptSettings[IB_CH].chNum,
 		chPreemptSettings[IB_CH].chSequence+1,
@@ -342,7 +342,7 @@ void ADC1_2_IRQHandler(void)
 		/*read data*/
 		adc_preempt_value[IA_CH] = adc_preempt_conversion_data_get_local(
 		ADC1,
-			chPreemptSettings[IB_CH].chSequence);
+			chPreemptSettings[IA_CH].chSequence);
 		
 		adc_preempt_value[UDC_CH] = adc_preempt_conversion_data_get_local(
 		ADC1,
@@ -359,9 +359,9 @@ void ADC1_2_IRQHandler(void)
 		ADC2,
 			chPreemptSettings[IB_CH].chSequence);
 		
-		adc_preempt_value[RES_SIN_CH] = adc_preempt_conversion_data_get_local(
+		adc_preempt_value[RES_COS_CH] = adc_preempt_conversion_data_get_local(
 		ADC2,
-			chPreemptSettings[RES_SIN_CH].chSequence);
+			chPreemptSettings[RES_COS_CH].chSequence);
 		//adc_flag_clear_local(ADC2, ADC_PCCE_FLAG);
 	}
 
@@ -384,9 +384,6 @@ void ADC3_IRQHandler(void)
 		ADC3,
 			chPreemptSettings[IC_CH].chSequence);
 
-		adc_preempt_value[RES_COS_CH] = adc_preempt_conversion_data_get_local(
-		ADC3,
-			chPreemptSettings[RES_COS_CH].chSequence);
 		//adc_flag_clear_local(ADC3, ADC_PCCE_FLAG);
 		
 	}
@@ -450,7 +447,7 @@ void getADCfastData(void)
 	/*read data*/
 	adc_preempt_value[IA_CH] = adc_preempt_conversion_data_get_local(
 	ADC1,
-		chPreemptSettings[IB_CH].chSequence);
+		chPreemptSettings[IA_CH].chSequence);
 		
 	adc_preempt_value[UDC_CH] = adc_preempt_conversion_data_get_local(
 	ADC1,
@@ -461,7 +458,7 @@ void getADCfastData(void)
 		chPreemptSettings[IB_CH].chSequence);
 		
 	adc_preempt_value[RES_SIN_CH] = adc_preempt_conversion_data_get_local(
-	ADC2,
+	ADC1,
 		chPreemptSettings[RES_SIN_CH].chSequence);
 	/*read data*/
 	adc_preempt_value[IC_CH] = adc_preempt_conversion_data_get_local(
@@ -469,6 +466,6 @@ void getADCfastData(void)
 		chPreemptSettings[IC_CH].chSequence);
 
 	adc_preempt_value[RES_COS_CH] = adc_preempt_conversion_data_get_local(
-	ADC3,
+	ADC2,
 		chPreemptSettings[RES_COS_CH].chSequence);
 }
