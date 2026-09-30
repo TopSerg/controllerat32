@@ -37,8 +37,9 @@
 #define QS138_UDC_HIGH_LIMIT_V                    (65)
 #define QS138_UDC_HIGH_DERATING_RANGE_V           (3)
 
-/* 1000 rpm, expressed in the rad/s units used by Control.Wmechanical. */
-#define QS138_COMMISSIONING_MAX_SPEED_RAD_S       (104.719755F)
+/* 3000 rpm: allows resolver zero calibration while the external drive runs
+ * at its observed 2600-2700 rpm maximum. Control.Wmechanical uses rad/s. */
+#define QS138_COMMISSIONING_MAX_SPEED_RAD_S       (314.159265F)
 #define QS138_SPEED_DERATING_RANGE_RAD_S          (20)
 
 /* A 0x300 current command is normally sent every 10 ms. */
