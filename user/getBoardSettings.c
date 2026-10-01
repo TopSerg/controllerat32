@@ -69,11 +69,12 @@ uint8_t getBoardSettings(boardAnalogSet_st * brd)
 #endif
 	
 #if MOTOR_RESOLVER == MOTOR_QS138
-	/* PROVISIONAL QS138 SIN/COS front-end timing and electrical zero. The
-	 * shift can be changed safely at runtime through calibration CAN 0x301. */
+	/* QS138 electrical zero calibrated on the dual-motor stand with PWM active.
+	 * Swapping SIN/COS makes the FOC angle follow the measured rotor direction;
+	 * 0.675 rad gives near-zero flux position error under external rotation. */
 	brd->resolverBase = 1200;
-	brd->resolverSwap = 0;
-	brd->resolverShift = 2.7;
+	brd->resolverSwap = 1;
+	brd->resolverShift = 0.675f;
 	
 #endif	
 	return res;
