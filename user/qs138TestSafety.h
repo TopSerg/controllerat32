@@ -7,9 +7,10 @@
  * QS138 commissioning-only safety helpers.
  *
  * This module deliberately does NOT change the 20 A over-current trip,
- * enable decoupling, or alter provisional motor parameters.  It only makes
- * the next bench test observable and prevents a hard PWM pickup on a rotor
- * that is already spinning.
+ * enable the generated decoupling path, or alter provisional motor
+ * parameters.  It only makes the next bench test observable, prevents a hard
+ * PWM pickup on a rotor that is already spinning, and provides a separately
+ * bounded q-axis back-EMF feed-forward for the staged B2 test.
  */
 
 #define QS138_FLIGHT_RECORDER_CAPACITY             (256U)
@@ -17,6 +18,12 @@
 #define QS138_OFFSET_FREEZE_STABLE_SAMPLES         (2000U)
 #define QS138_OFFSET_FREEZE_MAX_SPEED_RAD_S         (1.0F)
 #define QS138_PWM_START_MAX_SPEED_RAD_S             (10.0F)
+
+/* Stage B2 feed-forward.  This is intentionally separate from
+ * SystemParameters.DecouplingEnable, which remains zero. */
+#define QS138_BACK_EMF_FF_DEFAULT_GAIN              (0.75F)
+#define QS138_BACK_EMF_FF_MAX_ABS_V                 (20.0F)
+#define QS138_BACK_EMF_FF_MAX_UDC_FRACTION          (0.35F)
 
 typedef struct {
     uint32_t sequence;
@@ -34,6 +41,8 @@ typedef struct {
     real32_T IqRef;
     real32_T Ud;
     real32_T Uq;
+    real32_T UqPi;
+    real32_T UqFeedForward;
     real32_T UmodRef;
     real32_T Udc;
     real32_T thetaElectrical;
@@ -71,6 +80,14 @@ extern volatile uint8_t g_qs138LatePwmEnableBlocked;
 extern volatile real32_T g_qs138FrozenIaOffset;
 extern volatile real32_T g_qs138FrozenIbOffset;
 extern volatile real32_T g_qs138FrozenIcOffset;
+
+/* JTAG-visible Stage B2 back-EMF feed-forward controls/diagnostics.
+ * Enable/gain are intentionally writable in RAM for a guarded bench test. */
+extern volatile uint8_t g_qs138BackEmfFeedForwardEnable;
+extern volatile real32_T g_qs138BackEmfFeedForwardGain;
+extern volatile real32_T g_qs138BackEmfFeedForwardRawV;
+extern volatile real32_T g_qs138BackEmfFeedForwardCommandV;
+extern volatile uint8_t g_qs138BackEmfFeedForwardLimited;
 
 void QS138TestSafetyTick(const inSignals_st *io,
                          boolean_T overCurrentInstantaneous,
