@@ -50,8 +50,10 @@ typedef struct {
     uint8_t hardwareFaultInput;
 } QS138FlightRecorderSample;
 
-/* JTAG-visible recorder state.  When g_qs138FlightRecorderFrozen == 1 the
- * array is stable and can be read without racing the ISR. */
+/* JTAG-visible recorder state.  The recorder is intentionally unarmed until
+ * the current-sensor offsets have been accepted.  When
+ * g_qs138FlightRecorderFrozen == 1 the array is stable and can be read
+ * without racing the ISR. */
 extern volatile QS138FlightRecorderSample
     g_qs138FlightRecorder[QS138_FLIGHT_RECORDER_CAPACITY];
 extern volatile uint16_t g_qs138FlightRecorderWriteIndex;
@@ -60,6 +62,7 @@ extern volatile uint16_t g_qs138FlightRecorderValidSamples;
 extern volatile uint16_t g_qs138FlightRecorderPostRemaining;
 extern volatile uint8_t g_qs138FlightRecorderTriggered;
 extern volatile uint8_t g_qs138FlightRecorderFrozen;
+extern volatile uint8_t g_qs138FlightRecorderArmed;
 extern volatile uint32_t g_qs138FlightRecorderSequence;
 
 /* JTAG-visible commissioning interlocks/status. */
