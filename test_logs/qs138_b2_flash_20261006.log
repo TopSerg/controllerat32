@@ -1,0 +1,736 @@
+BINARY=C:\Project\controllerat32-overcurrent\build\debug\AT32_Base.bin BYTES=163956 SHA256=881fce6f482dd76587216628cb3232918c69229209a983893fc486fdfbfcffbd
+Successfully initialized.
+WAITING_FOR_BOOT_DEVICE_240
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+py : Traceback (most recent call last):
+At line:2 char:1
++ py -3 -u tools/qs138_b2_flash.py build/debug/AT32_Base.bin --expected ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  File "C:\Project\controllerat32-overcurrent\tools\qs138_b2_flash.py", line 60, in <module>
+    main()
+    ~~~~^^
+  File "C:\Project\controllerat32-overcurrent\tools\qs138_b2_flash.py", line 39, in main
+    raise RuntimeError("Device 240 did not appear in boot mode")
+RuntimeError: Device 240 did not appear in boot mode
