@@ -20,6 +20,7 @@
 #include "Logic.h"
 #include "systemDefinations.h"
 #include "ControlSystem_v2_private.h"
+#include "qs138TestSafety.h"
 
 /* Named constants for Chart: '<S3>/Logic' */
 #define IN_ACTDISCHARGE                ((uint8_T)1U)
@@ -126,8 +127,21 @@ void Logic(boolean_T GlobErr, uint16_T cmd, DW_Logic *localDW)
 
      case IN_READY:
       if ((RequestedRegMode != READY) && (localDW->delayCnt > 5U)) {
-        localDW->is_ProcCMD = IN_CONTROL;
+        /* Commissioning interlock: do not make a new CONTROL/PWM transition
+         * until current offsets are known, resolver data is live, and the
+         * rotor is essentially stationary.  Once CONTROL is entered this
+         * check is not repeated, so the external drive may then ramp speed
+         * with PWM continuously active. */
+        if (QS138TestSafetyAllowControlStart()) {
+          localDW->is_ProcCMD = IN_CONTROL;
+        } else {
+          /* Hold READY instead of overflowing delayCnt while blocked. */
+          localDW->delayCnt = 6U;
+        }
       } else {
+        if (RequestedRegMode == READY) {
+          g_qs138LatePwmEnableBlocked = 0U;
+        }
         localDW->delayCnt++;
       }
       break;
