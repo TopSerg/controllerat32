@@ -22,6 +22,12 @@ FIELDS = {
     "frozenIaOffset": ("g_qs138FrozenIaOffset", "f32"),
     "frozenIbOffset": ("g_qs138FrozenIbOffset", "f32"),
     "frozenIcOffset": ("g_qs138FrozenIcOffset", "f32"),
+    "backEmfFfEnable": ("g_qs138BackEmfFeedForwardEnable", "u8"),
+    "backEmfFfGain": ("g_qs138BackEmfFeedForwardGain", "f32"),
+    "backEmfFfRawV": ("g_qs138BackEmfFeedForwardRawV", "f32"),
+    "backEmfFfCommandV": ("g_qs138BackEmfFeedForwardCommandV", "f32"),
+    "backEmfFfLimited": ("g_qs138BackEmfFeedForwardLimited", "u8"),
+    "vqPlay": ("VqPlay", "f32"),
     "rpmRadPerSec": ("Control.Wmechanical", "f32"),
     "wElectrical": ("Control.Welectrical", "f32"),
     "udcFiltered": ("Control.UdcFiltered", "f32"),
@@ -124,12 +130,12 @@ def main():
             raise RuntimeError("Recorder is not frozen on an over-current event")
         args.output.parent.mkdir(parents=True, exist_ok=True)
         output = jlink_run([f"SaveBin {args.output.resolve()}, "
-                            f"0x{addresses['recorder']:08X}, 0x5800"])
-        if not args.output.exists() or args.output.stat().st_size != 22528:
+                            f"0x{addresses['recorder']:08X}, 0x6000"])
+        if not args.output.exists() or args.output.stat().st_size != 24576:
             raise RuntimeError(f"J-Link dump failed: {output}")
         metadata = args.output.with_suffix(".json")
         metadata.write_text(json.dumps(status, indent=2), encoding="utf-8")
-        print(f"SAVED {args.output.resolve()} bytes=22528 metadata={metadata.resolve()}")
+        print(f"SAVED {args.output.resolve()} bytes=24576 metadata={metadata.resolve()}")
 
 
 if __name__ == "__main__":
