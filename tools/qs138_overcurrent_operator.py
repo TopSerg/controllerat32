@@ -96,7 +96,7 @@ async def main(args):
                                 gate_ready_since = None
                         fault_detected = any(fault) or (phase == "active" and gate != 2)
                         safety_limit = (
-                            math.hypot(id_meas, iq_meas) >= 8.0 or
+                            max(abs(id_meas), abs(iq_meas)) >= 5.0 or
                             udc >= 63.0 or udc < 55.0 or abs(speed) >= 2025.0
                         )
                         if phase in ("starting", "active") and (fault_detected or safety_limit):
@@ -108,9 +108,9 @@ async def main(args):
                                 print("FAULT_HOLD_ZERO: stop right drive; do not reset "
                                       "or clear fault before JTAG dump", flush=True)
                             else:
-                                # Zero current was already requested during the
-                                # first sweep. An 8 A tracking error requires
-                                # PWM off; merely repeating zero does nothing.
+                                # Stage B2 uses a deliberately conservative 5 A
+                                # d/q guard. Repeating a zero-current request does
+                                # not remove the cause, so turn CONTROL off.
                                 await ws.send(json.dumps(control(0)))
                                 phase = "safety_stop"
                                 print("SAFETY_STOP_PWM_OFF: stop right drive; "
@@ -149,7 +149,7 @@ async def main(args):
                             await ws.send(json.dumps(torque(0.0)))
                             print("CURRENT_ZERO_REQUESTED", flush=True)
                         elif command in ("iq=0.5", "iq=1.0", "iq=2.0") and phase == "active":
-                            speed = abs(float(latest.get("ns", 0.0)))
+                            speed = abs(float(latest.get("ns", 0.0)) )
                             if 500.0 <= speed <= 1000.0 and return_to_zero_at is None:
                                 requested_iq = float(command.split("=")[1])
                                 await ws.send(json.dumps(torque(requested_iq)))
