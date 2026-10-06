@@ -1,0 +1,286 @@
+BINARY=C:\Project\controllerat32-overcurrent\build\debug\AT32_Base.bin BYTES=163956 SHA256=a0a84ab159ab8c585e953683a29b32bddc2c2c5867a85112570e87b031a4e925
+Successfully initialized.
+WAITING_FOR_BOOT_DEVICE_240
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+ 1 type self.available_devices : <class 'set'>
+scan_device start
+find id: 240
+ 1 type self.available_devices : <class 'set'>
+Receiving start boot...
+answer from mcu: 240
+BOOT_DEVICE=240
+Receiving ack...
+answer from mcu: 0
+Writing file len...
+firmwarelen 163960
+Receiving ack3...
+answer from mcu: 0
+Start after ack3...
+answer from mcu: 0
+TRANSFERRED=0/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=16384/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=32768/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=49152/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=65536/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=81920/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=98304/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=114688/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=131072/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=147456/163960
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+answer from mcu: 0
+TRANSFERRED=163840/163960
+last message
+answer from mcu: 2
+load end with res =  2
+TRANSFER_COMPLETE
+Successfully send.
+VERIFYING_FIRMWARE_CRC_AND_STARTING
+answer from mcu: 240
+BOOT_DEVICE=240
+APPLICATION_CAN_CONFIRMED
+FIRMWARE_STARTED
