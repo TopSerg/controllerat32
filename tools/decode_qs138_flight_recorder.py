@@ -22,7 +22,7 @@ import struct
 from pathlib import Path
 
 CAPACITY = 256
-SAMPLE_FORMAT = struct.Struct("<I4H17f5B3x")
+SAMPLE_FORMAT = struct.Struct("<I4H19f5B3x")
 SAMPLE_SIZE = SAMPLE_FORMAT.size
 
 FIELDNAMES = [
@@ -30,7 +30,7 @@ FIELDNAMES = [
     "rawIa", "rawIb", "rawIc", "rawUdc",
     "Ia", "Ib", "Ic",
     "Id", "Iq", "IdRef", "IqRef",
-    "Ud", "Uq", "UmodRef", "Udc",
+    "Ud", "Uq", "UqPi", "UqFeedForward", "UmodRef", "Udc",
     "thetaElectrical", "wElectrical", "wMechanical",
     "pwmTa", "pwmTb", "pwmTc",
     "modActive", "overCurrentInstant", "overCurrentLatchedBefore",
