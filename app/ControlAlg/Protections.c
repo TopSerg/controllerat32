@@ -38,6 +38,7 @@ volatile uint16_t g_qs138FlightRecorderValidSamples = 0U;
 volatile uint16_t g_qs138FlightRecorderPostRemaining = 0U;
 volatile uint8_t g_qs138FlightRecorderTriggered = 0U;
 volatile uint8_t g_qs138FlightRecorderFrozen = 0U;
+volatile uint8_t g_qs138FlightRecorderArmed = 0U;
 volatile uint32_t g_qs138FlightRecorderSequence = 0U;
 
 volatile uint8_t g_qs138CurrentOffsetsFrozen = 0U;
@@ -103,6 +104,8 @@ void QS138TestSafetyResetFlightRecorder(void)
   g_qs138FlightRecorderTriggered = 0U;
   g_qs138FlightRecorderFrozen = 0U;
   g_qs138FlightRecorderSequence = 0U;
+  g_qs138FlightRecorderArmed =
+    (g_qs138CurrentOffsetsFrozen != 0U) ? 1U : 0U;
 }
 
 boolean_T QS138TestSafetyAllowControlStart(void)
@@ -130,6 +133,24 @@ void QS138TestSafetyTick(const inSignals_st *io,
   volatile QS138FlightRecorderSample *sample;
 
   QS138TestSafetyUpdateCurrentOffsets();
+
+  /* The current sensors report a large apparent phase current while their
+   * startup offsets are still converging.  The 20 A protection remains fully
+   * active, but those pre-calibration samples are not useful flight-recorder
+   * triggers.  Arm the recorder only after the stationary offset baseline has
+   * been accepted. */
+  if (g_qs138CurrentOffsetsFrozen == 0U) {
+    g_qs138FlightRecorderArmed = 0U;
+    return;
+  }
+
+  /* First sample after offset acceptance starts a clean ring history.  This
+   * guarantees that a startup transient cannot consume the one-shot buffer
+   * needed for the rotating test. */
+  if (g_qs138FlightRecorderArmed == 0U) {
+    QS138TestSafetyResetFlightRecorder();
+    return;
+  }
 
   if (g_qs138FlightRecorderFrozen != 0U) {
     return;
@@ -225,8 +246,8 @@ void Protections(const inSignals_st *IO, const Errors_st *Error_st, boolean_T
 
   OR_k = (overCurrentInstantaneous || Error_st->OverCurrent);
 
-  /* Capture every 10 kHz protection/control sample and freeze around the
-   * first instantaneous over-current. */
+  /* Capture every 10 kHz protection/control sample after current-offset
+   * calibration and freeze around the first instantaneous over-current. */
   QS138TestSafetyTick(IO, overCurrentInstantaneous, Error_st);
 
   /* Logic: '<S157>/OR' incorporates:
