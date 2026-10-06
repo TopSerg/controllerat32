@@ -48,6 +48,16 @@ volatile real32_T g_qs138FrozenIbOffset = 0.0F;
 volatile real32_T g_qs138FrozenIcOffset = 0.0F;
 static uint16_t g_qs138OffsetStableSamples = 0U;
 
+/* Stage B2 back-EMF feed-forward.  This path deliberately uses VqPlay, which
+ * is summed into the q-axis voltage after the generated current PI, so the
+ * generated DecouplingEnable path remains disabled and untouched. */
+volatile uint8_t g_qs138BackEmfFeedForwardEnable = 1U;
+volatile real32_T g_qs138BackEmfFeedForwardGain =
+  QS138_BACK_EMF_FF_DEFAULT_GAIN;
+volatile real32_T g_qs138BackEmfFeedForwardRawV = 0.0F;
+volatile real32_T g_qs138BackEmfFeedForwardCommandV = 0.0F;
+volatile uint8_t g_qs138BackEmfFeedForwardLimited = 0U;
+
 static void QS138TestSafetyUpdateCurrentOffsets(void)
 {
   const boolean_T pwmInactive = !Control.stat.mod_Active;
@@ -95,6 +105,54 @@ static void QS138TestSafetyUpdateCurrentOffsets(void)
   }
 }
 
+static void QS138TestSafetyUpdateBackEmfFeedForward(void)
+{
+  real32_T raw = 0.0F;
+  real32_T command = 0.0F;
+  real32_T limit = 0.0F;
+  real32_T udc = Control.UdcFiltered;
+  const boolean_T directCurrentControlActive =
+    (g_qs138BackEmfFeedForwardEnable != 0U) &&
+    Control.stat.mod_Active &&
+    TestRefSignals.testActive &&
+    !TestRefSignals.voltageControl &&
+    !TestRefSignals.fixedAngle &&
+    !Control.errors.GlobalError;
+
+  if (udc < 0.0F) {
+    udc = 0.0F;
+  }
+
+  if (directCurrentControlActive) {
+    /* motorEmf in Control is the internal phase flux constant used by the
+     * generated decoupling calculation.  Preserve the measured speed sign. */
+    raw = g_qs138BackEmfFeedForwardGain *
+      Control.Welectrical * Control.motorParams.motorEmf;
+
+    limit = QS138_BACK_EMF_FF_MAX_UDC_FRACTION * udc;
+    if (limit > QS138_BACK_EMF_FF_MAX_ABS_V) {
+      limit = QS138_BACK_EMF_FF_MAX_ABS_V;
+    }
+
+    command = raw;
+    if (command > limit) {
+      command = limit;
+    } else if (command < -limit) {
+      command = -limit;
+    }
+  }
+
+  g_qs138BackEmfFeedForwardRawV = raw;
+  g_qs138BackEmfFeedForwardCommandV = command;
+  g_qs138BackEmfFeedForwardLimited =
+    (platform_abs(raw - command) > 0.001F) ? 1U : 0U;
+
+  /* VqPlay is added after PID_IQ.Out in the generated q-axis voltage path.
+   * Updating it here occurs before the current regulators execute in this ADC
+   * cycle. */
+  VqPlay = command;
+}
+
 void QS138TestSafetyResetFlightRecorder(void)
 {
   g_qs138FlightRecorderWriteIndex = 0U;
@@ -130,9 +188,15 @@ void QS138TestSafetyTick(const inSignals_st *io,
 {
   uint16_t idx;
   uint8_t justTriggered = 0U;
+  const real32_T appliedUqFeedForward = VqPlay;
   volatile QS138FlightRecorderSample *sample;
 
   QS138TestSafetyUpdateCurrentOffsets();
+
+  /* Compute the feed-forward that will be used later in this same ADC cycle.
+   * appliedUqFeedForward above still describes the previous cycle, matching
+   * the last-applied PWM duties captured by this recorder sample. */
+  QS138TestSafetyUpdateBackEmfFeedForward();
 
   /* The current sensors report a large apparent phase current while their
    * startup offsets are still converging.  The 20 A protection remains fully
@@ -173,7 +237,12 @@ void QS138TestSafetyTick(const inSignals_st *io,
   sample->IdRef = Control.IdRefReg;
   sample->IqRef = Control.IqRefReg;
   sample->Ud = Control.Ud;
-  sample->Uq = Control.Uq;
+  /* Control.Uq is the generated PI/decoupling output before VqPlay.  Keep the
+   * legacy Uq recorder column as total q-axis request while also exposing the
+   * two components explicitly. */
+  sample->UqPi = Control.Uq;
+  sample->UqFeedForward = appliedUqFeedForward;
+  sample->Uq = Control.Uq + appliedUqFeedForward;
   sample->UmodRef = Control.UmodRef;
   sample->Udc = io->Vdc;
   sample->thetaElectrical = Control.ThetaElectrical;
