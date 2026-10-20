@@ -1,4 +1,36 @@
-## Сборка проекта под Windows
+## Быстрая сборка прошивки через CMake
+
+Требуются CMake, Ninja и ARM GNU Toolchain (`arm-none-eabi-gcc`). Команды PowerShell:
+
+```powershell
+Set-Location C:\Project\controllerat32
+git submodule update --init --recursive
+cmake --preset debug --fresh
+cmake --build --preset debug
+```
+
+Готовый бинарный файл для загрузчика:
+
+```text
+C:\Project\controllerat32\build\debug\AT32_Base.bin
+```
+
+При последующих сборках без изменения конфигурации достаточно:
+
+```powershell
+Set-Location C:\Project\controllerat32
+cmake --build --preset debug
+```
+
+Если CMake сообщает, что не найдены компилятор или Ninja, проверьте:
+
+```powershell
+arm-none-eabi-gcc --version
+cmake --version
+ninja --version
+```
+
+## Сборка проекта под Windows через Visual Studio
 
 1. Установите [Visual Studio 2022](https://visualstudio.microsoft.com/ru/downloads/).
 2. Скачайте файл [VisualGDB-5.6r8_retail.msi](https://fost.ws/soft/visualgdb-5-6-r8-key-2023/?ysclid=m8cre3j7go885579343) и установите

@@ -271,6 +271,7 @@
     <ClInclude Include="user\gpioInit.h" />
     <ClInclude Include="user\nvicInit.h" />
     <ClInclude Include="user\pwmInit.h" />
+    <ClInclude Include="user\qs138Commissioning.h" />
     <ClInclude Include="user\resolverInit.h" />
     <ClInclude Include="user\tempSpiInit.h" />
     <ClInclude Include="user\timerInit.h" />

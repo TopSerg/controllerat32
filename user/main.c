@@ -28,6 +28,7 @@
 #include "at32f403a_407_crc.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 /*Module includes*/
 #include "nvicInit.h"
 #include "pwmInit.h"
@@ -130,6 +131,169 @@ static uint8_t sendToCAN1(can_tx_message_type *message)
 {
 	if (can_message_transmit(CAN1, message) != CAN_TX_STATUS_NO_EMPTY) return 1;
 	return 0;
+}
+
+/* Temporary stand diagnostic: one coherent 20 ms control snapshot and PWM
+ * rail counts are sent over 0x5D0..0x5E2. A single 50 Hz duty sample can alias
+ * the electrical cycle, so the PWM ISR counts rail hits at the full 10 kHz. */
+#define QS138_DIAG_VALUE_COUNT 30U
+#define QS138_DIAG_PAIR_COUNT 15U
+#define QS138_DIAG_FRAME_COUNT 19U
+#define QS138_DIAG_PWM_SAMPLES 200U
+extern volatile uint32_t timer1msTicks;
+typedef struct {
+	volatile float value[QS138_DIAG_VALUE_COUNT];
+	volatile uint16_t dutyMin[3];
+	volatile uint16_t dutyMax[3];
+	volatile uint16_t dutyLow[3];
+	volatile uint16_t dutyHigh[3];
+	volatile uint16_t sampleCount;
+	volatile uint32_t tickMs;
+	volatile uint8_t sequence;
+	volatile uint8_t flags;
+} qs138_diag_snapshot_t;
+
+static qs138_diag_snapshot_t g_qs138Diag;
+static volatile uint8_t g_qs138DiagPending = 0U;
+
+static uint16_t qs138DutyToU16(float duty)
+{
+	if (!(duty > 0.0f)) return 0U;
+	if (duty >= 1.0f) return 65535U;
+	return (uint16_t)(duty * 65535.0f + 0.5f);
+}
+
+static void qs138DiagSamplePwm(void)
+{
+	static uint16_t samples = 0U;
+	static float dutyMin[3] = {1.0f, 1.0f, 1.0f};
+	static float dutyMax[3] = {0.0f, 0.0f, 0.0f};
+	static uint16_t dutyLow[3] = {0U, 0U, 0U};
+	static uint16_t dutyHigh[3] = {0U, 0U, 0U};
+	const float duty[3] = {SVPWM.Ta, SVPWM.Tb, SVPWM.Tc};
+	uint8_t phase;
+
+	if (cpT_VcutoMCUCurrentCommand_gstate->VcuCurrentCommandEnable == 0U) {
+		samples = 0U;
+		for (phase = 0U; phase < 3U; ++phase) {
+			dutyMin[phase] = 1.0f;
+			dutyMax[phase] = 0.0f;
+			dutyLow[phase] = 0U;
+			dutyHigh[phase] = 0U;
+		}
+		return;
+	}
+	for (phase = 0U; phase < 3U; ++phase) {
+		if (duty[phase] < dutyMin[phase]) dutyMin[phase] = duty[phase];
+		if (duty[phase] > dutyMax[phase]) dutyMax[phase] = duty[phase];
+		if (duty[phase] <= 0.001f) ++dutyLow[phase];
+		if (duty[phase] >= 0.999f) ++dutyHigh[phase];
+	}
+	if (++samples < QS138_DIAG_PWM_SAMPLES) return;
+
+	if (g_qs138DiagPending == 0U) {
+		g_qs138Diag.value[0] = Control.Wmechanical;
+		g_qs138Diag.value[1] = Control.Welectrical;
+		g_qs138Diag.value[2] = Control.IdRefReg;
+		g_qs138Diag.value[3] = Control.IqRefReg;
+		g_qs138Diag.value[4] = Control.Id;
+		g_qs138Diag.value[5] = Control.Iq;
+		g_qs138Diag.value[6] = Control.Ud;
+		g_qs138Diag.value[7] = Control.Uq;
+		g_qs138Diag.value[8] = Control.UdRef;
+		g_qs138Diag.value[9] = Control.UqRef;
+		g_qs138Diag.value[10] = Control.UmodActual;
+		g_qs138Diag.value[11] = Control.UmodRef;
+		g_qs138Diag.value[12] = Control.UdcFiltered;
+		g_qs138Diag.value[13] = Control.IdcFilt;
+		g_qs138Diag.value[14] = PID_ID.Out;
+		g_qs138Diag.value[15] = PID_ID.OutPreSat;
+		g_qs138Diag.value[16] = PID_ID.SatErr;
+		g_qs138Diag.value[17] = PID_ID.Ui;
+		g_qs138Diag.value[18] = PID_IQ.Out;
+		g_qs138Diag.value[19] = PID_IQ.OutPreSat;
+		g_qs138Diag.value[20] = PID_IQ.SatErr;
+		g_qs138Diag.value[21] = PID_IQ.Ui;
+		g_qs138Diag.value[22] = Control.ThetaElectrical;
+		g_qs138Diag.value[23] = Control.ThetaElectrCorr;
+		g_qs138Diag.value[24] = Control.motorFluxPosError;
+		g_qs138Diag.value[25] = SVPWM.Ta;
+		g_qs138Diag.value[26] = SVPWM.Tb;
+		g_qs138Diag.value[27] = SVPWM.Tc;
+		g_qs138Diag.value[28] = Control.motorTorque;
+		g_qs138Diag.value[29] = SVPWM.PRD_VAL;
+		for (phase = 0U; phase < 3U; ++phase) {
+			g_qs138Diag.dutyMin[phase] = qs138DutyToU16(dutyMin[phase]);
+			g_qs138Diag.dutyMax[phase] = qs138DutyToU16(dutyMax[phase]);
+			g_qs138Diag.dutyLow[phase] = dutyLow[phase];
+			g_qs138Diag.dutyHigh[phase] = dutyHigh[phase];
+		}
+		g_qs138Diag.sampleCount = samples;
+		g_qs138Diag.tickMs = timer1msTicks;
+		++g_qs138Diag.sequence;
+		g_qs138Diag.flags =
+			(Control.stat.fwActive ? 0x01U : 0U) |
+			(Control.stat.saturationActive ? 0x02U : 0U) |
+			(Control.stat.mod_Active ? 0x04U : 0U) |
+			(Control.actLimits.idcLimitFlg ? 0x08U : 0U) |
+			(Control.actLimits.udcLimitFlg ? 0x10U : 0U);
+		g_qs138DiagPending = 1U;
+	}
+	samples = 0U;
+	for (phase = 0U; phase < 3U; ++phase) {
+		dutyMin[phase] = 1.0f;
+		dutyMax[phase] = 0.0f;
+		dutyLow[phase] = 0U;
+		dutyHigh[phase] = 0U;
+	}
+}
+
+static void qs138PutU16(uint8_t *data, uint16_t value)
+{
+	data[0] = (uint8_t)value;
+	data[1] = (uint8_t)(value >> 8);
+}
+
+void qs138DiagTransmitStep(void)
+{
+	static uint32_t lastTick = 0U;
+	static uint8_t frameIndex = 0U;
+	can_tx_message_type message = {0};
+	uint8_t phase;
+	float first, second;
+	const uint32_t now = timer1msTicks;
+	if (g_qs138DiagPending == 0U || now == lastTick) return;
+	lastTick = now;
+	message.standard_id = 0x5D0U + frameIndex;
+	message.id_type = CAN_ID_STANDARD;
+	message.frame_type = CAN_TFT_DATA;
+	message.dlc = 8U;
+	if (frameIndex == 0U) {
+		message.data[0] = g_qs138Diag.sequence;
+		message.data[1] = g_qs138Diag.flags;
+		qs138PutU16(&message.data[2], g_qs138Diag.sampleCount);
+		message.data[4] = (uint8_t)g_qs138Diag.tickMs;
+		message.data[5] = (uint8_t)(g_qs138Diag.tickMs >> 8);
+		message.data[6] = (uint8_t)(g_qs138Diag.tickMs >> 16);
+		message.data[7] = (uint8_t)(g_qs138Diag.tickMs >> 24);
+	} else if (frameIndex <= QS138_DIAG_PAIR_COUNT) {
+		first = g_qs138Diag.value[(frameIndex - 1U) * 2U];
+		second = g_qs138Diag.value[(frameIndex - 1U) * 2U + 1U];
+		memcpy(&message.data[0], &first, sizeof(first));
+		memcpy(&message.data[4], &second, sizeof(second));
+	} else {
+		phase = frameIndex - QS138_DIAG_PAIR_COUNT - 1U;
+		qs138PutU16(&message.data[0], g_qs138Diag.dutyMin[phase]);
+		qs138PutU16(&message.data[2], g_qs138Diag.dutyMax[phase]);
+		qs138PutU16(&message.data[4], g_qs138Diag.dutyLow[phase]);
+		qs138PutU16(&message.data[6], g_qs138Diag.dutyHigh[phase]);
+	}
+	if (sendToCAN1(&message) != 0U) {
+		if (++frameIndex == QS138_DIAG_FRAME_COUNT) {
+			frameIndex = 0U;
+			g_qs138DiagPending = 0U;
+		}
+	}
 }
 
 float IaOffset = 0;
@@ -342,12 +506,21 @@ static void timerTickCall(void)
 	(Control.stat.mod_Active) ? (cpT_McuStatus_gstate->McustGateDrv = McuStatusMCU_stGateDrvPWMrun) : (cpT_McuStatus_gstate->McustGateDrv = McuStatusMCU_stGateDrvFreeWheel);
 	(Control.stat.mod_Active) ? (cpT_McuStatus_gstate->McuVCUWorkMode = McuStatusMCU_VCUWorkModeTorqueControl) : (cpT_McuStatus_gstate->McuVCUWorkMode = McuStatusMCU_VCUWorkModeStandby);
 	/*Set Actual Derating bits*/
-	cpT_McuDeratingStatus_gstate->McubDernOvrUdc = Control.actLimits.udcLimitFlg;
-	cpT_McuDeratingStatus_gstate->McubDernUndrUdc = Control.actLimits.udcLimitFlg;
+	/* The model has one flag per limiter, but the DBC has separate flags
+	 * for upper/lower DC voltage and discharge/charge current. Keep the
+	 * direction in telemetry so a braking run can be diagnosed correctly. */
+	cpT_McuDeratingStatus_gstate->McubDernOvrUdc =
+		Control.actLimits.udcLimitFlg &&
+		(Control.UdcFiltered > SystemParameters.FuncLimits.Udc_high);
+	cpT_McuDeratingStatus_gstate->McubDernUndrUdc =
+		Control.actLimits.udcLimitFlg &&
+		(Control.UdcFiltered < SystemParameters.FuncLimits.Udc_low);
 	cpT_McuDeratingStatus_gstate->McubDernTempIGBT = Control.actLimits.igbtTlimFlg;
 	cpT_McuDeratingStatus_gstate->McubDernN = Control.actLimits.speedLimFlg;
-	cpT_McuDeratingStatus_gstate->McubDernOvrIdc = Control.actLimits.idcLimitFlg;
-	cpT_McuDeratingStatus_gstate->McubDernUndrIdc = Control.actLimits.idcLimitFlg;
+	cpT_McuDeratingStatus_gstate->McubDernOvrIdc =
+		Control.actLimits.idcLimitFlg && (Control.IdcFilt >= 0.0f);
+	cpT_McuDeratingStatus_gstate->McubDernUndrIdc =
+		Control.actLimits.idcLimitFlg && (Control.IdcFilt < 0.0f);
 	cpT_McuDeratingStatus_gstate->McubDernStrTemp = Control.actLimits.motorTlimFlg;
 	
 	Rs = Control.motorParams.motorRs;
@@ -491,6 +664,17 @@ static void timerTickCall(void)
 			TestRefSignals.IdTest = 0.0F;
 			TestRefSignals.IqTest = 0.0F;
 		}
+	}
+	else if (workMode == CURRENT)
+	{
+		/* Identification's CURRENT path copies the previous TestRefSignals.
+		 * Clear the direct-current override when 0x300 disables it; otherwise
+		 * the last Id/Iq request can remain active after the host sends Stop. */
+		TestRefSignals.testActive = false;
+		TestRefSignals.IdTest = 0.0F;
+		TestRefSignals.IqTest = 0.0F;
+		TestRefSignals.fixedAngle = false;
+		TestRefSignals.voltageControl = false;
 	}
 	
 	TimIsrTime = CONVERT_toUs((startTick - GET_ACTUAL_TIMECNT())) * 1e6;
@@ -646,6 +830,7 @@ void adcCall(void)
 
 	/* Call to exported function */
 	isrADC();
+	qs138DiagSamplePwm();
 #if 0
 	static uint32_t i = 0;
 	VdPlay = waveData[i++];
@@ -994,6 +1179,7 @@ int main(void)
 
 		}
 		messageLoop();
+		qs138DiagTransmitStep();
 	}
 #endif
 }

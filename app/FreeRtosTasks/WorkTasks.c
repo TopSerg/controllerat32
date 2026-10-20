@@ -11,6 +11,7 @@
 #include "CommInterface.h"
 #include "canOpen_lib.h"
 #include "canDBCtask.h"
+extern void qs138DiagTransmitStep(void);
 TaskHandle_t led2_handler;
 /* led2 task */
 void led2_task_function(void *pvParameters);
@@ -112,6 +113,7 @@ void canDBC_task(void *argument)
 	/* Infinite loop */
 	for (;;) {
 		canDBC_tick();
+		qs138DiagTransmitStep();
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 
